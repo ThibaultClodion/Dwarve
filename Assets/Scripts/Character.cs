@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Timeline;
@@ -14,11 +16,14 @@ public class Character : MonoBehaviour
     private float gravity = -9.81f;
     private float gravityMultiplier = 3.0f;
     private float velocity;
+    private bool canAttack = true;
 
     //Character Data
     [SerializeField] private float walkSpeed = 10f;
     [SerializeField] private float turnSmoothTime = 0.05f;
     [SerializeField] private float turnSmoothVelocity;
+    [SerializeField] private float attackCooldown = 2f;
+
 
     private void Awake()
     {
@@ -61,7 +66,7 @@ public class Character : MonoBehaviour
     //Rotate the Character to where is going
     private void Rotation()
     {
-        if (direction.magnitude == 0) return;
+        if (direction.magnitude <= 1f) return;
 
         float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg;
         float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref turnSmoothVelocity, turnSmoothTime);
@@ -85,7 +90,18 @@ public class Character : MonoBehaviour
     //Called when the Character attack
     void OnFire() 
     {
-        animator.SetTrigger("Attack");
+        if(canAttack)
+        {
+            canAttack = false;
+            StartCoroutine(AttackCooldown());
+            animator.SetTrigger("Attack");
+        }
+    }
+
+    IEnumerator AttackCooldown()
+    {
+        yield return new WaitForSeconds(attackCooldown);
+        canAttack = true;
     }
 
     public void Hit()
