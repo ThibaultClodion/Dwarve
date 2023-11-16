@@ -18,11 +18,11 @@ public class Sword : MonoBehaviour
         
     }
 
-    private void OnCollisionEnter(Collision collision)
+    private void OnTriggerEnter(Collider other)
     {
-        if(collision.gameObject.tag == "Player" && collision.gameObject != playerParent)
+        if (other.gameObject.tag == "Player" && other.gameObject != playerParent)
         {
-            collision.gameObject.GetComponent<Character>().Hit();
+            other.gameObject.GetComponent<Character>().Hit();
         }
     }
 }
