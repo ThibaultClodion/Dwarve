@@ -8,26 +8,31 @@ using UnityEngine.Timeline;
 
 public class Character : MonoBehaviour
 {
+    private TrailRenderer trail;
     private CharacterController controller;
     private Animator animator;
-    private Vector3 direction;
 
     //Default Data
     private float gravity = -9.81f;
     private float gravityMultiplier = 3.0f;
     private float velocity;
     private bool canAttack = true;
+    private Vector3 direction;
+    private Vector3 nonNullDirection;  //Allow the player to perform dash while not moving
+    private bool canDash = true;
 
     //Character Data
     [SerializeField] private float walkSpeed = 10f;
     [SerializeField] private float turnSmoothTime = 0.05f;
     [SerializeField] private float turnSmoothVelocity;
     [SerializeField] private float attackCooldown = 2f;
+    [SerializeField] private float dashCooldown = 3f;
 
 
     private void Awake()
     {
         //Initialize variables
+        trail = GetComponent<TrailRenderer>();
         controller = GetComponent<CharacterController>();
         animator = GetComponent<Animator>();
     }
@@ -35,7 +40,11 @@ public class Character : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        //Allow the player to dash without having perform any mouvement
+        nonNullDirection = transform.forward.normalized;
+
+        //Initially there is no trail
+        trail.widthMultiplier = 0.0f;
     }
 
     // Update is called once per frame
@@ -85,6 +94,11 @@ public class Character : MonoBehaviour
         //Define the position that the player want to reach
         Vector2 moveInput = pos.Get<Vector2>();
         direction = new Vector3(moveInput.x, 0f, moveInput.y).normalized;
+
+        if(direction.magnitude >= 1f) 
+        {
+            nonNullDirection = direction;
+        }
     }
 
     //Called when the Character attack
@@ -98,7 +112,38 @@ public class Character : MonoBehaviour
         }
     }
 
-    IEnumerator AttackCooldown()
+    void OnDash()
+    {
+        if (canDash)
+        {
+            canDash = false;
+            StartCoroutine(DashCoroutine(0.25f));
+        }
+    }
+
+    private IEnumerator DashCoroutine(float dashTime)
+    {
+        float startTime = Time.time;
+
+        //Begin the trail behond the player
+        trail.widthMultiplier = 1f;
+
+        while (Time.time < startTime + dashTime)
+        {
+            controller.Move(nonNullDirection * Time.deltaTime * walkSpeed * 2);
+            yield return null;
+        }
+
+
+        //End the trail at this precise coolddown to look good
+        yield return new WaitForSeconds(dashCooldown - 1.75f);
+        trail.widthMultiplier = 0f;
+
+        yield return new WaitForSeconds(1.75f);
+        canDash = true;
+    }
+
+    private IEnumerator AttackCooldown()
     {
         yield return new WaitForSeconds(attackCooldown);
         canAttack = true;
