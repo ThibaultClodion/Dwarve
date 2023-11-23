@@ -12,8 +12,9 @@ public class HiltData : ScriptableObject
 
     //Blades Data
     [SerializeField] private BladeData[] blades;
+    [SerializeField] private BladeData emptyBlade;
 
-    // Initialize the blade and the Hilt
+    // Initialize the Hilt and the Associate Blades
     public void Init(GameObject hand)
     {
         Transform[] childrenTransform = hiltPrefab.GetComponentsInChildren<Transform>();
@@ -26,6 +27,21 @@ public class HiltData : ScriptableObject
             slotsTransform[i] = childrenTransform[i + 2];
         }
 
+        //If there are less blade than slots, put the resting slot to empty
+        BladeData[] newBlade = new BladeData[nbSlots];
+        for(int i = 0; i < nbSlots; i++)
+        {
+            if (i < blades.Length)
+            {
+                newBlade[i] = blades[i];
+            }
+            else
+            {
+                newBlade[i] = emptyBlade;
+            }
+        }
+        blades = newBlade;
+
         //Instantiate the hilt
         GameObject hilt = Instantiate(hiltPrefab, hiltPrefab.transform.position, hiltPrefab.transform.rotation);
         hilt.transform.SetParent(hand.transform, false);
@@ -34,6 +50,10 @@ public class HiltData : ScriptableObject
         for(int i = 0; i < nbSlots; i++) 
         {
             GameObject blade = Instantiate(blades[i].bladePrefab, slotsTransform[i].position, slotsTransform[i].rotation);
+
+            //Move the blade following the green axis (be careful about that when setting the slot) depending on the it height.
+            blade.transform.position += blade.transform.up * (blades[i].bladeHeight / 2);
+
             blade.transform.SetParent(hilt.transform, false);
         }
         

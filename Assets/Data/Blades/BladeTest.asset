@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: BladeTest
   m_EditorClassIdentifier: 
   bladePrefab: {fileID: 7396511936795345720, guid: 680d93af64b43a7469c110897f3e9eb3, type: 3}
-  bladeHeight: 6
+  bladeHeight: 1

@@ -15,3 +15,5 @@ MonoBehaviour:
   hiltPrefab: {fileID: 8984723269120229395, guid: 430eb7cfa3f3a3b499a64316e96f820b, type: 3}
   blades:
   - {fileID: 11400000, guid: 2b42c7b84c8367c44ad11ac3995a63ba, type: 2}
+  - {fileID: 11400000, guid: c270c2293611cee439fb622a7a8e50bf, type: 2}
+  emptyBlade: {fileID: 11400000, guid: c270c2293611cee439fb622a7a8e50bf, type: 2}
