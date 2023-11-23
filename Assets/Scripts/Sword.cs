@@ -4,12 +4,14 @@ using UnityEngine;
 
 public class Sword : MonoBehaviour
 {
-    public GameObject playerParent;
+    private GameObject playerGO;
 
     // Start is called before the first frame update
     void Start()
     {
-        
+
+        //Search the player GO
+        playerGO = this.transform.parent.parent.parent.gameObject;
     }
 
     // Update is called once per frame
@@ -20,7 +22,7 @@ public class Sword : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.tag == "Player" && other.gameObject != playerParent)
+        if (other.gameObject.tag == "Player" && other.gameObject != playerGO)
         {
             other.gameObject.GetComponent<Character>().Hit();
         }

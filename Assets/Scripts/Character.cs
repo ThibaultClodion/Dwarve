@@ -13,6 +13,7 @@ public class Character : MonoBehaviour
     private Animator animator;
 
     //Default Data
+    [SerializeField] GameObject hand;
     private float gravity = -9.81f;
     private float gravityMultiplier = 3.0f;
     private float velocity;
@@ -20,6 +21,9 @@ public class Character : MonoBehaviour
     private Vector3 direction;
     private Vector3 nonNullDirection;  //Allow the player to perform dash while not moving
     private bool canDash = true;
+
+    //Data of sword
+    [SerializeField] private HiltData hiltData;
 
     //Character Data
     [SerializeField] private float walkSpeed = 10f;
@@ -45,6 +49,9 @@ public class Character : MonoBehaviour
 
         //Initially there is no trail
         trail.widthMultiplier = 0.0f;
+
+        //Init the sword
+        hiltData.Init(hand);
     }
 
     // Update is called once per frame
@@ -54,7 +61,6 @@ public class Character : MonoBehaviour
         Gravity();
         Rotation();
         Move();
-
     }
 
     //Apply gravity
