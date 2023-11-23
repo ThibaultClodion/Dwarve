@@ -12,11 +12,11 @@ public class TargetGroupAutomatic : MonoBehaviour
     {
         autoTargetGroup = GetComponent<CinemachineTargetGroup>();
 
-        Transform[] players = playerParentGO.GetComponentsInChildren<Transform>();
+        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
 
-        foreach (Transform player in players) 
+        foreach (GameObject player in players) 
         {
-            autoTargetGroup.AddMember(player, 1, 0); 
+            autoTargetGroup.AddMember(player.transform, 1, 0);
         }
     }
 

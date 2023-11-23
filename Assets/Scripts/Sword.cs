@@ -6,19 +6,14 @@ public class Sword : MonoBehaviour
 {
     private GameObject playerGO;
 
+
     // Start is called before the first frame update
     void Start()
     {
-
         //Search the player GO
         playerGO = this.transform.parent.parent.parent.gameObject;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 
     private void OnTriggerEnter(Collider other)
     {

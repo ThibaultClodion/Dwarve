@@ -158,5 +158,6 @@ public class Character : MonoBehaviour
     public void Hit()
     {
         Debug.Log(gameObject.name + " Has been attacked");
+        Destroy(gameObject);
     }
 }

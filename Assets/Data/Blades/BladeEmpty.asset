@@ -9,9 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9db8a8a1e8dff6742b0048839a9b1a73, type: 3}
-  m_Name: HiltTest
+  m_Script: {fileID: 11500000, guid: a864c952b4fea28459cb7a90465065dd, type: 3}
+  m_Name: BladeEmpty
   m_EditorClassIdentifier: 
-  hiltPrefab: {fileID: 8984723269120229395, guid: 430eb7cfa3f3a3b499a64316e96f820b, type: 3}
-  blades:
-  - {fileID: 11400000, guid: 2b42c7b84c8367c44ad11ac3995a63ba, type: 2}
+  bladePrefab: {fileID: 5946392018585471889, guid: 56acb03d25d652840955cd67bf0179a4, type: 3}
+  bladeHeight: 0
