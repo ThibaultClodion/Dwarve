@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Sword
   - Ground
+  - Canvas
   layers:
   - Default
   - TransparentFX

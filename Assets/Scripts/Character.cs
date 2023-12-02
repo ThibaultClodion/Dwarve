@@ -123,6 +123,7 @@ public class Character : MonoBehaviour
         if (canDash)
         {
             canDash = false;
+            //Make the dash
             StartCoroutine(DashCoroutine(0.25f));
         }
     }
