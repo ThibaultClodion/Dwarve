@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class SkinSelection : MonoBehaviour
 {
@@ -23,5 +24,6 @@ public class SkinSelection : MonoBehaviour
     public void UpdateColor()
     {
         player.GetComponent<MeshRenderer>().material = materials[Mathf.Abs(materialIndex % materials.Length)];
+        GetComponent<Image>().color = materials[Mathf.Abs(materialIndex % materials.Length)].color;
     }
 }
