@@ -14,12 +14,10 @@ public class Ready : MonoBehaviour
 
     private void Awake()
     {
-        inputManager = GameObject.Find("PlayerManager").GetComponent<PlayerInputManager>();
-    }
-
-    private void Update()
-    {
-        Debug.Log(inputManager.playerCount);
+        if(SceneManager.GetActiveScene().buildIndex == 0)
+        {
+            inputManager = GameObject.Find("PlayerManager").GetComponent<PlayerInputManager>();
+        }
     }
 
     public void IsReady()
