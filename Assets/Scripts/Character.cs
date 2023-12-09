@@ -11,6 +11,7 @@ public class Character : MonoBehaviour
     private TrailRenderer trail;
     private CharacterController controller;
     private Animator animator;
+    private PlayerInput input;
 
     //Default Data
     [SerializeField] GameObject hand;
@@ -18,8 +19,9 @@ public class Character : MonoBehaviour
     private float gravityMultiplier = 3.0f;
     private float velocity;
     private bool canAttack = true;
-    private Vector3 direction;
+    public Vector3 direction;
     private Vector3 nonNullDirection;  //Allow the player to perform dash while not moving
+    public Vector3 rotation;
     private bool canDash = true;
     public bool isPlaying = false;  //Game Manager need to modify this bool
 
@@ -40,6 +42,7 @@ public class Character : MonoBehaviour
         trail = GetComponent<TrailRenderer>();
         controller = GetComponent<CharacterController>();
         animator = GetComponent<Animator>();
+        input = GetComponent<PlayerInput>();
     }
 
     // Start is called before the first frame update
@@ -85,9 +88,9 @@ public class Character : MonoBehaviour
     //Rotate the Character to where is going
     private void Rotation()
     {
-        if (direction.magnitude <= 1f) return;
+        //if (rotation.magnitude <= 1f) return;
 
-        float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg;
+        float targetAngle = Mathf.Atan2(rotation.x, rotation.y) * Mathf.Rad2Deg;
         float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref turnSmoothVelocity, turnSmoothTime);
         transform.rotation = Quaternion.Euler(0f, angle, 0f);
     }
@@ -108,6 +111,32 @@ public class Character : MonoBehaviour
         if(direction.magnitude >= 1f) 
         {
             nonNullDirection = direction;
+        }
+    }
+
+    void OnRotate(InputValue pos)
+    {
+        //Define the position that the player want to reach
+        Vector2 rotateInput = pos.Get<Vector2>();
+
+        if(input.currentControlScheme == "Keyboard&Mouse")
+        {
+            Debug.Log("Yes");
+
+            //Formula for transform the mouse screen position to [-1;1]
+            rotateInput.y = (rotateInput.y / (Screen.height / 2)) - 1;
+            rotateInput.x = (rotateInput.x / (Screen.width / 2)) - 1;
+
+            rotation = new Vector3(rotateInput.x, rotateInput.y, 0f).normalized;
+        }
+        else
+        {
+            //Keep in Mind previous rotation if gamepad is not moving
+            if (rotateInput.magnitude >= 1f)
+            {
+                Debug.Log("Yes");
+                rotation = new Vector3(rotateInput.x, rotateInput.y, 0f).normalized;
+            }
         }
     }
 
