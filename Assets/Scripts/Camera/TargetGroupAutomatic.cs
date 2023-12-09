@@ -5,7 +5,6 @@ using UnityEngine;
 
 public class TargetGroupAutomatic : MonoBehaviour
 {
-    public GameObject playerParentGO;
     private CinemachineTargetGroup autoTargetGroup;
 
     public void UpdateTarget()
@@ -13,6 +12,8 @@ public class TargetGroupAutomatic : MonoBehaviour
         autoTargetGroup = GetComponent<CinemachineTargetGroup>();
 
         GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+
+        Debug.Log(players.Length);
 
         foreach (GameObject player in players) 
         {

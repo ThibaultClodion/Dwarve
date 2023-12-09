@@ -8,19 +8,10 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject[] players;
     [SerializeField] private TargetGroupAutomatic targetGroupAutomatic;
 
-    public bool isPlaying = false;
 
     void Start()
     {
-        //Force to wait one second or the player is falling infinitly
-        //It's the only way i find to resolve the problem
-        StartCoroutine(WaitForPlaying(1));
-    }
-
-    IEnumerator WaitForPlaying(int  seconds)
-    {
-        yield return new WaitForSeconds(seconds);
-        isPlaying = true;
+        StartGame();
     }
 
     public void StartGame()
@@ -37,13 +28,24 @@ public class GameManager : MonoBehaviour
 
         //Update the camera
         targetGroupAutomatic.UpdateTarget();
+
+        //Wait 1 Seconds Before Playing
+        //After I would make a countdown before a wave begin
+        StartCoroutine(WaitBeforePlay());
+    }
+
+    IEnumerator WaitBeforePlay()
+    {
+        yield return new WaitForSeconds(1);
+
+        for (int i = 0; i < players.Length; i++)
+        {
+            players[i].GetComponent<Character>().isPlaying = true;
+        }
     }
 
     void Update()
     {
-        if (!isPlaying) 
-        {
-            StartGame();
-        }
+
     }
 }

@@ -4,10 +4,10 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.Timeline;
 
 public class Character : MonoBehaviour
 {
+    //Component
     private TrailRenderer trail;
     private CharacterController controller;
     private Animator animator;
@@ -21,6 +21,7 @@ public class Character : MonoBehaviour
     private Vector3 direction;
     private Vector3 nonNullDirection;  //Allow the player to perform dash while not moving
     private bool canDash = true;
+    public bool isPlaying = false;  //Game Manager need to modify this bool
 
     //Data of sword
     [SerializeField] private HiltData hiltData;
@@ -57,10 +58,13 @@ public class Character : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //Player Movement
-        Gravity();
-        Rotation();
-        Move();
+        if(isPlaying) 
+        {
+            //Player Movement
+            Gravity();
+            Rotation();
+            Move();
+        }
     }
 
     //Apply gravity
@@ -118,16 +122,19 @@ public class Character : MonoBehaviour
         }
     }
 
+    //Called when the Chracter perform a Dash
     void OnDash()
     {
         if (canDash)
         {
             canDash = false;
+
             //Make the dash
             StartCoroutine(DashCoroutine(0.25f));
         }
     }
 
+    //Make a dash with dashTime duration
     private IEnumerator DashCoroutine(float dashTime)
     {
         float startTime = Time.time;
@@ -142,7 +149,7 @@ public class Character : MonoBehaviour
         }
 
 
-        //End the trail at this precise coolddown to look good
+        //End the trail at this precise cooldown to look good I don't find precise formula
         yield return new WaitForSeconds(dashCooldown - 1.75f);
         trail.widthMultiplier = 0f;
 
