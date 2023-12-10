@@ -52,4 +52,9 @@ public class Ready : MonoBehaviour
             }
         }
     }
+
+    void OnCancel()
+    {
+        NotReady();
+    }
 }

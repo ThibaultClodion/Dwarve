@@ -121,8 +121,6 @@ public class Character : MonoBehaviour
 
         if(input.currentControlScheme == "Keyboard&Mouse")
         {
-            Debug.Log("Yes");
-
             //Formula for transform the mouse screen position to [-1;1]
             rotateInput.y = (rotateInput.y / (Screen.height / 2)) - 1;
             rotateInput.x = (rotateInput.x / (Screen.width / 2)) - 1;
@@ -134,7 +132,6 @@ public class Character : MonoBehaviour
             //Keep in Mind previous rotation if gamepad is not moving
             if (rotateInput.magnitude >= 1f)
             {
-                Debug.Log("Yes");
                 rotation = new Vector3(rotateInput.x, rotateInput.y, 0f).normalized;
             }
         }
@@ -143,7 +140,7 @@ public class Character : MonoBehaviour
     //Called when the Character attack
     void OnFire() 
     {
-        if(canAttack)
+        if(canAttack && isPlaying)
         {
             canAttack = false;
             StartCoroutine(AttackCooldown());
@@ -154,7 +151,7 @@ public class Character : MonoBehaviour
     //Called when the Chracter perform a Dash
     void OnDash()
     {
-        if (canDash)
+        if (canDash && isPlaying)
         {
             canDash = false;
 

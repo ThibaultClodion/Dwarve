@@ -13,8 +13,6 @@ public class TargetGroupAutomatic : MonoBehaviour
 
         GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
 
-        Debug.Log(players.Length);
-
         foreach (GameObject player in players) 
         {
             autoTargetGroup.AddMember(player.transform, 1, 0);
