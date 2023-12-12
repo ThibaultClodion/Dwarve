@@ -12,6 +12,7 @@ public class Character : MonoBehaviour
     private CharacterController controller;
     private Animator animator;
     private PlayerInput input;
+    private GameManager gameManager;
 
     //Default Data
     [SerializeField] GameObject hand;
@@ -35,7 +36,7 @@ public class Character : MonoBehaviour
     [SerializeField] private float attackCooldown = 2f;
     [SerializeField] private float dashCooldown = 3f;
 
-
+    #region Initialisation
     private void Awake()
     {
         //Initialize variables
@@ -58,6 +59,12 @@ public class Character : MonoBehaviour
         hiltData.Init(hand);
     }
 
+    public void getGameManager()
+    {
+        gameManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
+    }
+    #endregion
+
     // Update is called once per frame
     void Update()
     {
@@ -69,6 +76,8 @@ public class Character : MonoBehaviour
             Move();
         }
     }
+
+    #region Movement
 
     //Apply gravity
     private void Gravity()
@@ -136,7 +145,9 @@ public class Character : MonoBehaviour
             }
         }
     }
+    #endregion
 
+    #region ActionInput
     //Called when the Character attack
     void OnFire() 
     {
@@ -188,10 +199,18 @@ public class Character : MonoBehaviour
         yield return new WaitForSeconds(attackCooldown);
         canAttack = true;
     }
+    #endregion
 
     public void Hit()
     {
-        Debug.Log(gameObject.name + " Has been attacked");
-        Destroy(gameObject);
+        isPlaying = false;
+        gameManager.nbPlayersAlive--;
+
+        //If there is only one survivant
+        if (gameManager.nbPlayersAlive == 1)
+        {
+            gameManager.Victory();
+        }
+        gameObject.SetActive(false);
     }
 }
