@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -13,6 +14,12 @@ public class GameManager : MonoBehaviour
     //Game parameters
     [SerializeField] private int nbRoundToWin;
     public int nbPlayersAlive;
+
+    //Canvas
+    [SerializeField] private GameObject countdownGO;
+    [SerializeField] private TextMeshProUGUI countdownText;    
+    [SerializeField] private GameObject winningGO;
+    [SerializeField] private TextMeshProUGUI winningText;
 
 
     void Start()
@@ -55,7 +62,7 @@ public class GameManager : MonoBehaviour
             //All the player stop moving
             characters[i].isPlaying = false;
 
-            //Change player location and active them
+            //Change player location
             players[i].transform.position = spawns[i].position;
         }
 
@@ -65,24 +72,34 @@ public class GameManager : MonoBehaviour
 
     IEnumerator WaitBeforePlay()
     {
-        //Wait a bit before active all players for don't having bugs
-        yield return new WaitForSeconds(0.01f);
+        countdownGO.SetActive(true);
+        countdownText.text = "3";
 
+        //Wait a bit before active all players for don't having bugs
+        yield return new WaitForSeconds(0.3f);
         for (int i = 0; i < players.Length; i++)
         {
+            players[i].transform.position = spawns[i].position;
             players[i].SetActive(true);
         }
 
         //Update the camera
         targetGroupAutomatic.UpdateTarget();
 
-        //Countdown before allow players to fight
+
+        //Countdown
+        yield return new WaitForSeconds(1);
+        countdownText.text = "2";        
+        yield return new WaitForSeconds(1);
+        countdownText.text = "1";
         yield return new WaitForSeconds(1);
 
         for (int i = 0; i < players.Length; i++)
         {
             characters[i].isPlaying = true;
         }
+
+        countdownGO.SetActive(false);
     }
 
     public void Victory()
@@ -103,7 +120,8 @@ public class GameManager : MonoBehaviour
         //Launch a new round if the game isn't finish
         if (nbWins[winnerIndex] == nbRoundToWin)
         {
-            Debug.Log(players[winnerIndex] + "Has win the game");
+            winningGO.SetActive(true);
+            winningText.text = "Player number " + (winnerIndex + 1) + "win !!";
         }
         else
         {
