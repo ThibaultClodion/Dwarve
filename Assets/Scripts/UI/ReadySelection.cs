@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
-public class Ready : MonoBehaviour
+public class ReadySelection : MonoBehaviour
 {
     public static int nbReady;
     public bool isReady = false;

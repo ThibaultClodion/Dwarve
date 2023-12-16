@@ -19,7 +19,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject countdownGO;
     [SerializeField] private TextMeshProUGUI countdownText;    
     [SerializeField] private GameObject winningGO;
-    [SerializeField] private TextMeshProUGUI winningText;
+    [SerializeField] private TextMeshProUGUI winningText; 
+    [SerializeField] private GameObject weaponModdingGO;
 
 
     void Start()
@@ -117,7 +118,7 @@ public class GameManager : MonoBehaviour
 
         nbWins[winnerIndex]++;
 
-        //Launch a new round if the game isn't finish
+        //Detect if the game is finisg or not
         if (nbWins[winnerIndex] == nbRoundToWin)
         {
             winningGO.SetActive(true);
@@ -125,7 +126,18 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            StartRound();
+            //Create the weapons
+
+            //Add the canvas to the right place
+            for (int i = 0; i < players.Length; i++)
+            {
+                characters[i].MoveWeaponCanvas();
+            }
+
+            //Start the next round
+
+            //Need to find when every players are ready
+            //StartRound();
         }
     }
 }

@@ -29,6 +29,9 @@ public class Character : MonoBehaviour
     //Data of sword
     [SerializeField] private HiltData hiltData;
 
+    //Canvas
+    [SerializeField] private GameObject weaponCanvas;
+
     //Character Data
     [SerializeField] private float walkSpeed = 10f;
     [SerializeField] private float turnSmoothTime = 0.05f;
@@ -76,6 +79,26 @@ public class Character : MonoBehaviour
             Move();
         }
     }
+
+    #region UI
+
+    public void MoveWeaponCanvas()
+    {
+        GameObject layout = GameObject.Find("GroupLayout");
+
+        //If we are in the seleciton menu than move the canvas to group all the canvas
+        if (layout != null)
+        {
+            weaponCanvas.SetActive(true);
+            weaponCanvas.transform.SetParent(layout.transform, false);
+        }
+        else
+        {
+            weaponCanvas.SetActive(false);
+        }
+    }
+
+    #endregion
 
     #region Movement
 
