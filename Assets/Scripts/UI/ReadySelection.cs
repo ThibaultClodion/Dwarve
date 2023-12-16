@@ -55,6 +55,10 @@ public class ReadySelection : MonoBehaviour
 
     void OnCancel()
     {
-        NotReady();
+        //Otherwise the script is call during the game
+        if (SceneManager.GetActiveScene().buildIndex == 0)
+        {
+            NotReady();
+        }
     }
 }

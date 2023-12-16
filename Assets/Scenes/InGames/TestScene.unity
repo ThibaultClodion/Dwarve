@@ -648,7 +648,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 712748678}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.49269885, y: -0.00000001898499, z: 0.000000010749118, w: 0.8701999}
+  m_LocalRotation: {x: 0.49269888, y: -1.5372278e-15, z: 3.9512753e-16, w: 0.8701999}
   m_LocalPosition: {x: 0, y: 500, z: -300}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -728,6 +728,7 @@ MonoBehaviour:
   players: []
   targetGroupAutomatic: {fileID: 1938375649}
   nbRoundToWin: 2
+  nbWeaponPlayersReady: 0
   nbPlayersAlive: 0
   countdownGO: {fileID: 127830253}
   countdownText: {fileID: 1604920829}
@@ -836,7 +837,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.49269885, y: -0.00000001898499, z: 0.000000010749118, w: 0.8701999}
+  m_LocalRotation: {x: 0.49269888, y: -1.5372278e-15, z: 3.9512753e-16, w: 0.8701999}
   m_LocalPosition: {x: 0, y: 500, z: -300}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -1028,7 +1029,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1343693863
 RectTransform:
   m_ObjectHideFlags: 0

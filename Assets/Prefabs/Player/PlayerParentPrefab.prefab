@@ -1519,16 +1519,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hand: {fileID: 2333028433976670975}
-  direction: {x: 0, y: 0, z: 0}
-  rotation: {x: 0, y: 0, z: 0}
   isPlaying: 0
   hiltData: {fileID: 11400000, guid: fcaccde597ad8ae47ad619c08603a1a9, type: 2}
   weaponCanvas: {fileID: 6194361236899028870}
-  walkSpeed: 7
-  turnSmoothTime: 0.1
-  turnSmoothVelocity: 0
-  attackCooldown: 1
-  dashCooldown: 1
+  weaponReadyDisapear:
+  - {fileID: 8562653615988328928}
 --- !u!143 &2262985523147285595
 CharacterController:
   m_ObjectHideFlags: 0
@@ -1770,9 +1765,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Provisoire
-
-'
+  m_text: Weapon Modding
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -1802,7 +1795,7 @@ MonoBehaviour:
   m_fontSize: 36
   m_fontSizeBase: 36
   m_fontWeight: 400
-  m_enableAutoSizing: 0
+  m_enableAutoSizing: 1
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0

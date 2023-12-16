@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 public class Character : MonoBehaviour
 {
@@ -14,30 +15,36 @@ public class Character : MonoBehaviour
     private PlayerInput input;
     private GameManager gameManager;
 
+    [Header("Default Data")]
     //Default Data
     [SerializeField] GameObject hand;
     private float gravity = -9.81f;
     private float gravityMultiplier = 3.0f;
     private float velocity;
     private bool canAttack = true;
-    public Vector3 direction;
+    private Vector3 direction;
     private Vector3 nonNullDirection;  //Allow the player to perform dash while not moving
-    public Vector3 rotation;
+    private Vector3 rotation;
     private bool canDash = true;
     public bool isPlaying = false;  //Game Manager need to modify this bool
 
-    //Data of sword
+    [Header("Sword Data")]
+    //Data of his sword
     [SerializeField] private HiltData hiltData;
 
-    //Canvas
+    [Header("Weapon Canvas")]
+    //Weapon Canvas and data associated
     [SerializeField] private GameObject weaponCanvas;
+    private bool weaponReady;
+    [SerializeField] private GameObject[] weaponReadyDisapear;
+
 
     //Character Data
-    [SerializeField] private float walkSpeed = 10f;
-    [SerializeField] private float turnSmoothTime = 0.05f;
-    [SerializeField] private float turnSmoothVelocity;
-    [SerializeField] private float attackCooldown = 2f;
-    [SerializeField] private float dashCooldown = 3f;
+    private float walkSpeed = 10f;
+    private float turnSmoothTime = 0.05f;
+    private float turnSmoothVelocity;
+    private float attackCooldown = 2f;
+    private float dashCooldown = 3f;
 
     #region Initialisation
     private void Awake()
@@ -98,6 +105,54 @@ public class Character : MonoBehaviour
         }
     }
 
+    public void WeaponReady()
+    {
+        if (!weaponReady)
+        {
+            gameManager.nbWeaponPlayersReady++;
+            weaponReady = true;
+
+            for (int i = 0; i < weaponReadyDisapear.Length; i++)
+            {
+                weaponReadyDisapear[i].SetActive(false);
+            }
+        }
+
+        if (gameManager.nbWeaponPlayersReady == gameManager.players.Length && weaponReady)
+        {
+            gameManager.StartRound();
+        }
+    }
+
+    public void WeaponNotReady()
+    {
+        if (weaponReady)
+        {
+            gameManager.nbWeaponPlayersReady--;
+            weaponReady = false;
+
+            for (int i = 0; i < weaponReadyDisapear.Length; i++)
+            {
+                weaponReadyDisapear[i].SetActive(true);
+            }
+        }
+    }
+
+    void OnCancel()
+    {
+        //Otherwise the script is call during the menu
+        if(SceneManager.GetActiveScene().buildIndex > 0)
+        {
+            if (weaponReady)
+            {
+                WeaponNotReady();
+            }
+            else
+            {
+                WeaponReady();
+            }
+        }
+    }
     #endregion
 
     #region Movement
@@ -234,6 +289,10 @@ public class Character : MonoBehaviour
         {
             gameManager.Victory();
         }
-        gameObject.SetActive(false);
+        else
+        {
+            //The else is necessary or the player could be disable at unexpected time
+            gameObject.SetActive(false);
+        }
     }
 }

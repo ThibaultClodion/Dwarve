@@ -13,7 +13,8 @@ public class GameManager : MonoBehaviour
 
     //Game parameters
     [SerializeField] private int nbRoundToWin;
-    public int nbPlayersAlive;
+    public int nbWeaponPlayersReady;
+    public int nbPlayersAlive;  //The characters need to acces this data
 
     //Canvas
     [SerializeField] private GameObject countdownGO;
@@ -34,12 +35,13 @@ public class GameManager : MonoBehaviour
         //Find all the players
         players = GameObject.FindGameObjectsWithTag("Player");
 
-        //Initialize the arrrays
+        //Initialize the arrrays and parameters
         characters = new Character[players.Length];
         nbWins = new int[players.Length];
         nbPlayersAlive = players.Length;
+        nbWeaponPlayersReady = 0;
 
-        for(int i = 0; i < players.Length; i++) 
+        for (int i = 0; i < players.Length; i++) 
         {
 
             //Get the characters script and make them get the GameManagerScript
@@ -57,6 +59,10 @@ public class GameManager : MonoBehaviour
     public void StartRound()
     {
         nbPlayersAlive = players.Length;
+        nbWeaponPlayersReady = 0;
+
+        //Disable canvas
+        weaponModdingGO.SetActive(false);
 
         for (int i = 0; i < players.Length; i++)
         {
@@ -118,26 +124,24 @@ public class GameManager : MonoBehaviour
 
         nbWins[winnerIndex]++;
 
-        //Detect if the game is finisg or not
+        //Detect if the game is finish or not
         if (nbWins[winnerIndex] == nbRoundToWin)
         {
             winningGO.SetActive(true);
             winningText.text = "Player number " + (winnerIndex + 1) + "win !!";
         }
+        //Creation of the weapons
         else
         {
-            //Create the weapons
+            //Enable the weapon canvas
+            weaponModdingGO.SetActive(true);
 
-            //Add the canvas to the right place
+            //Reactive the players
             for (int i = 0; i < players.Length; i++)
             {
+                players[i].SetActive(true);
                 characters[i].MoveWeaponCanvas();
             }
-
-            //Start the next round
-
-            //Need to find when every players are ready
-            //StartRound();
         }
     }
 }
