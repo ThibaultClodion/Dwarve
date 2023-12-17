@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -32,11 +33,10 @@ public class Character : MonoBehaviour
     //Data of his sword
     [SerializeField] private HiltData hiltData;
 
-    [Header("Weapon Canvas")]
+    [Header("Canvas")]
     //Weapon Canvas and data associated
-    [SerializeField] private GameObject weaponCanvas;
-    private bool weaponReady;
-    [SerializeField] private GameObject[] weaponReadyDisapear;
+    [SerializeField] private GameObject weaponPlayer;
+    [SerializeField] private GameObject selectionPlayer;
 
 
     //Character Data
@@ -67,6 +67,25 @@ public class Character : MonoBehaviour
 
         //Init the sword
         hiltData.Init(hand);
+
+        //For the moment the player are created during the PlayerSelection so i need to active them when the game start
+        ActiveSelectionCanvas();
+    }
+
+    public void ActiveSelectionCanvas()
+    {
+        if (SceneManager.GetActiveScene().name == "PlayerSelection" && selectionPlayer != null)
+        {
+            selectionPlayer.SetActive(true);
+        }
+    }
+
+    public void ActiveWeaponCanvas()
+    {
+        if (SceneManager.GetActiveScene().name == "WeaponSelection" && weaponPlayer != null)
+        {
+            weaponPlayer.SetActive(true);
+        }
     }
 
     public void getGameManager()
@@ -86,74 +105,6 @@ public class Character : MonoBehaviour
             Move();
         }
     }
-
-    #region UI
-
-    public void MoveWeaponCanvas()
-    {
-        GameObject layout = GameObject.Find("GroupLayout");
-
-        //If we are in the seleciton menu than move the canvas to group all the canvas
-        if (layout != null)
-        {
-            weaponCanvas.SetActive(true);
-            weaponCanvas.transform.SetParent(layout.transform, false);
-        }
-        else
-        {
-            weaponCanvas.SetActive(false);
-        }
-    }
-
-    public void WeaponReady()
-    {
-        if (!weaponReady)
-        {
-            gameManager.nbWeaponPlayersReady++;
-            weaponReady = true;
-
-            for (int i = 0; i < weaponReadyDisapear.Length; i++)
-            {
-                weaponReadyDisapear[i].SetActive(false);
-            }
-        }
-
-        if (gameManager.nbWeaponPlayersReady == gameManager.players.Length && weaponReady)
-        {
-            gameManager.StartRound();
-        }
-    }
-
-    public void WeaponNotReady()
-    {
-        if (weaponReady)
-        {
-            gameManager.nbWeaponPlayersReady--;
-            weaponReady = false;
-
-            for (int i = 0; i < weaponReadyDisapear.Length; i++)
-            {
-                weaponReadyDisapear[i].SetActive(true);
-            }
-        }
-    }
-
-    void OnCancel()
-    {
-        //Otherwise the script is call during the menu
-        if(SceneManager.GetActiveScene().buildIndex > 0)
-        {
-            if (weaponReady)
-            {
-                WeaponNotReady();
-            }
-            else
-            {
-                WeaponReady();
-            }
-        }
-    }
-    #endregion
 
     #region Movement
 

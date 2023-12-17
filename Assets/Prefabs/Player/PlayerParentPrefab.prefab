@@ -14,12 +14,12 @@ GameObject:
   - component: {fileID: 2248121211521962801}
   - component: {fileID: 8135821489109664001}
   m_Layer: 0
-  m_Name: PlayerCanvas
+  m_Name: SelectionPlayer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2177872335818504328
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1079,13 +1079,14 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1407600596898003276}
+  - component: {fileID: 2981929568293015409}
   m_Layer: 5
   m_Name: WeaponPlayer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1407600596898003276
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1107,6 +1108,18 @@ RectTransform:
   m_AnchoredPosition: {x: 293, y: 494.25}
   m_SizeDelta: {x: 586, y: 329.5}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &2981929568293015409
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6194361236899028870}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 74ec915060c8cf3498d30c76387633a7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6597275235446811832
 GameObject:
   m_ObjectHideFlags: 0
@@ -1521,9 +1534,8 @@ MonoBehaviour:
   hand: {fileID: 2333028433976670975}
   isPlaying: 0
   hiltData: {fileID: 11400000, guid: fcaccde597ad8ae47ad619c08603a1a9, type: 2}
-  weaponCanvas: {fileID: 6194361236899028870}
-  weaponReadyDisapear:
-  - {fileID: 8562653615988328928}
+  weaponPlayer: {fileID: 6194361236899028870}
+  selectionPlayer: {fileID: 806799782461877770}
 --- !u!143 &2262985523147285595
 CharacterController:
   m_ObjectHideFlags: 0
@@ -1697,9 +1709,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isReady: 0
-  readyDisapear:
+  selectionDisapear:
   - {fileID: 3329729983763751440}
   - {fileID: 1324849159548607391}
+  weaponDisapear:
+  - {fileID: 8562653615988328928}
 --- !u!1 &8562653615988328928
 GameObject:
   m_ObjectHideFlags: 0

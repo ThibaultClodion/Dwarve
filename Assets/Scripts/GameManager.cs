@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -13,7 +14,6 @@ public class GameManager : MonoBehaviour
 
     //Game parameters
     [SerializeField] private int nbRoundToWin;
-    public int nbWeaponPlayersReady;
     public int nbPlayersAlive;  //The characters need to acces this data
 
     //Canvas
@@ -21,7 +21,6 @@ public class GameManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI countdownText;    
     [SerializeField] private GameObject winningGO;
     [SerializeField] private TextMeshProUGUI winningText; 
-    [SerializeField] private GameObject weaponModdingGO;
 
 
     void Start()
@@ -39,7 +38,6 @@ public class GameManager : MonoBehaviour
         characters = new Character[players.Length];
         nbWins = new int[players.Length];
         nbPlayersAlive = players.Length;
-        nbWeaponPlayersReady = 0;
 
         for (int i = 0; i < players.Length; i++) 
         {
@@ -59,10 +57,6 @@ public class GameManager : MonoBehaviour
     public void StartRound()
     {
         nbPlayersAlive = players.Length;
-        nbWeaponPlayersReady = 0;
-
-        //Disable canvas
-        weaponModdingGO.SetActive(false);
 
         for (int i = 0; i < players.Length; i++)
         {
@@ -130,18 +124,18 @@ public class GameManager : MonoBehaviour
             winningGO.SetActive(true);
             winningText.text = "Player number " + (winnerIndex + 1) + "win !!";
         }
+
         //Creation of the weapons
         else
         {
-            //Enable the weapon canvas
-            weaponModdingGO.SetActive(true);
-
-            //Reactive the players
+            //Reactive the players and update they're ready script
             for (int i = 0; i < players.Length; i++)
             {
                 players[i].SetActive(true);
-                characters[i].MoveWeaponCanvas();
             }
+
+            //Open the weapon modding scene
+            SceneManager.LoadScene("WeaponSelection");
         }
     }
 }
