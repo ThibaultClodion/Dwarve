@@ -1,141 +1,75 @@
 using System.Collections;
 using System.Collections.Generic;
-using TMPro;
+using System.IO.IsolatedStorage;
 using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.UI;
 using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-    [SerializeField] private Transform[] spawns;
-    public GameObject[] players;
-    private Character[] characters;
-    private int[] nbWins;
-    [SerializeField] private TargetGroupAutomatic targetGroupAutomatic;
+    //Characters Data
+    private Character[] characters = new Character[4];
+    private int nbPlayers = 0;
 
-    //Game parameters
-    [SerializeField] private int nbRoundToWin;
-    public int nbPlayersAlive;  //The characters need to acces this data
+    //One player canvas Menu
+    private bool onOnePlayerMenu;
+    private GameObject onePlayerButton;
 
-    //Canvas
-    [SerializeField] private GameObject countdownGO;
-    [SerializeField] private TextMeshProUGUI countdownText;    
-    [SerializeField] private GameObject winningGO;
-    [SerializeField] private TextMeshProUGUI winningText; 
-
-
-    void Start()
+    private void Start()
     {
-        StartGame();
+        //Consider as if we change scene at start
+        ChangeScene();
     }
 
-    public void StartGame()
+    private void ChangeScene()
     {
+        //For scene where only first player acces Canvas
+        onOnePlayerMenu = (SceneManager.GetActiveScene().name == "MainMenu");
 
-        //Find all the players
-        players = GameObject.FindGameObjectsWithTag("Player");
-
-        //Initialize the arrrays and parameters
-        characters = new Character[players.Length];
-        nbWins = new int[players.Length];
-        nbPlayersAlive = players.Length;
-
-        for (int i = 0; i < players.Length; i++) 
+        if(onOnePlayerMenu)
         {
-
-            //Get the characters script and make them get the GameManagerScript
-            characters[i] = players[i].GetComponent<Character>();
-            characters[i].getGameManager();
-
-            //Initialize the nbWins
-            nbWins[i] = 0;     
+            onePlayerButton = GameObject.FindGameObjectWithTag("MainButton");
         }
-
-        StartRound();
-
     }
 
-    public void StartRound()
+    public void CharacterJoin()
     {
-        nbPlayersAlive = players.Length;
+        GameObject[] currentPlayers = GameObject.FindGameObjectsWithTag("Player");
 
-        for (int i = 0; i < players.Length; i++)
+        //Add the new player on the characters List
+        characters[nbPlayers] = currentPlayers[nbPlayers].GetComponent<Character>();
+        nbPlayers++;
+
+        //The first player to Join need to acquire the canvas buttons on the mainMenu
+        if(nbPlayers == 1 && onOnePlayerMenu)
         {
-            //All the player stop moving
-            characters[i].isPlaying = false;
-
-            //Change player location
-            players[i].transform.position = spawns[i].position;
+            characters[0].GetComponent<MultiplayerEventSystem>().SetSelectedGameObject(onePlayerButton);
         }
-
-        //Allow to wait before new Round and make countdown
-        StartCoroutine(WaitBeforePlay());
     }
 
-    IEnumerator WaitBeforePlay()
+    public void CharacterLeft(Character character)
     {
-        countdownGO.SetActive(true);
-        countdownText.text = "3";
-
-        //Wait a bit before active all players for don't having bugs
-        yield return new WaitForSeconds(0.3f);
-        for (int i = 0; i < players.Length; i++)
+        //Update the characters list so there is no hole on it
+        for(int i = 0; i < nbPlayers; i++)
         {
-            players[i].transform.position = spawns[i].position;
-            players[i].SetActive(true);
-        }
-
-        //Update the camera
-        targetGroupAutomatic.UpdateTarget();
-
-
-        //Countdown
-        yield return new WaitForSeconds(1);
-        countdownText.text = "2";        
-        yield return new WaitForSeconds(1);
-        countdownText.text = "1";
-        yield return new WaitForSeconds(1);
-
-        for (int i = 0; i < players.Length; i++)
-        {
-            characters[i].isPlaying = true;
-        }
-
-        countdownGO.SetActive(false);
-    }
-
-    public void Victory()
-    {
-        //Find the character that is alive (so that's still playing)
-        int winnerIndex = 0;
-
-        for (int i = 0; i < players.Length; i++)
-        {
-            if (characters[i].isPlaying == true)
+            if (characters[i] == character)
             {
-                winnerIndex = i;
+                //if the player 0 left, another player (if there is one) need to acquire the main button
+                if(i == 0 && characters[1] != null && onOnePlayerMenu)
+                {
+                    characters[1].GetComponent<MultiplayerEventSystem>().SetSelectedGameObject(onePlayerButton);
+                }
+
+                characters[i] = null;
+
+                for(int j = i; j < nbPlayers; j++)
+                {
+                    characters[j] = characters[j + 1];
+                }
             }
         }
 
-        nbWins[winnerIndex]++;
-
-        //Detect if the game is finish or not
-        if (nbWins[winnerIndex] == nbRoundToWin)
-        {
-            winningGO.SetActive(true);
-            winningText.text = "Player number " + (winnerIndex + 1) + "win !!";
-        }
-
-        //Creation of the weapons
-        else
-        {
-            //Reactive the players and update they're ready script
-            for (int i = 0; i < players.Length; i++)
-            {
-                players[i].SetActive(true);
-            }
-
-            //Open the weapon modding scene
-            SceneManager.LoadScene("WeaponSelection");
-        }
+        nbPlayers--;
     }
 }

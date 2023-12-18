@@ -14,7 +14,7 @@ public class ActiveWeaponsCanvas : MonoBehaviour
         for (int i = 0; i < players.Length; i++)
         {
             //Update the canvas
-            players[i].GetComponent<Character>().ActiveWeaponCanvas();
+            players[i].GetComponent<CharacterOld>().ActiveWeaponCanvas();
             players[i].GetComponent<Ready>().ResetNbReady();
         }
 

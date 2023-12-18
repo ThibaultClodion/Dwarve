@@ -20,7 +20,7 @@ public class Sword : MonoBehaviour
         //Trigger with another Player
         if (other.gameObject.tag == "Player" && other.gameObject != playerGO)
         {
-            other.gameObject.GetComponent<Character>().Hit();
+            other.gameObject.GetComponent<CharacterOld>().Hit();
         }
     }
 }

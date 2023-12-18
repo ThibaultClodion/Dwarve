@@ -14,7 +14,7 @@ public class ActiveSelectionCanvas : MonoBehaviour
         for (int i = 0; i < players.Length; i++)
         {
             //Update the canvas
-            players[i].GetComponent<Character>().ActiveSelectionCanvas();
+            players[i].GetComponent<CharacterOld>().ActiveSelectionCanvas();
             players[i].GetComponent<Ready>().ResetNbReady();
         }
 

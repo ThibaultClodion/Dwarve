@@ -6,8 +6,8 @@ using UnityEngine.SceneManagement;
 public class ChangeScene : MonoBehaviour
 {
     //Change scene (to change index go to build settings ! )
-    public void MoveToScene(int index)
+    public void MoveToScene(string name)
     {
-       SceneManager.LoadScene(index);
+       SceneManager.LoadScene(name);
     }
 }

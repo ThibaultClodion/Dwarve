@@ -6,8 +6,8 @@ TagManager:
   tags:
   - Sword
   - Ground
-  - Canvas
   - GameManager
+  - MainButton
   layers:
   - Default
   - TransparentFX
