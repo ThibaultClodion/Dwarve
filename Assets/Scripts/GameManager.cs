@@ -16,23 +16,66 @@ public class GameManager : MonoBehaviour
     private bool onOnePlayerMenu;
     private GameObject onePlayerButton;
 
+    //Scene Memory
+    private string actualScene;
+    private string previousScene;
+
     private void Start()
     {
-        //Consider as if we change scene at start
+        //Start is consider as Changing Scene
+        actualScene = SceneManager.GetActiveScene().name;
+        previousScene = SceneManager.GetActiveScene().name;
         ChangeScene();
     }
 
-    private void ChangeScene()
+    #region ScenesManagement
+    public void ChangeScene()
     {
-        //For scene where only first player acces Canvas
-        onOnePlayerMenu = (SceneManager.GetActiveScene().name == "MainMenu");
+        StartCoroutine(ChangeSceneWait());
+    }
 
-        if(onOnePlayerMenu)
+    IEnumerator ChangeSceneWait()
+    {
+        //Wait a bit to let the scene load
+        yield return new WaitForSeconds(0.1f);
+
+        //Update datas
+        UpdateSceneBool();
+        previousScene = actualScene;
+        actualScene = SceneManager.GetActiveScene().name;
+
+        if (onOnePlayerMenu)
         {
             onePlayerButton = GameObject.FindGameObjectWithTag("MainButton");
+
+            if (nbPlayers > 0)
+            {
+                characters[0].GetComponent<MultiplayerEventSystem>().SetSelectedGameObject(onePlayerButton);
+            }
         }
     }
 
+    public void UpdateSceneBool()
+    {
+        onOnePlayerMenu = SceneManager.GetActiveScene().name == "MainMenu" || SceneManager.GetActiveScene().name == "SettingsMenu" || SceneManager.GetActiveScene().name == "SettingsSelection";
+    }
+
+    public void ChangeToPreviousScene(Character character)
+    {
+        //Only the first player can navigate through menu
+        if(character == characters[0])
+        {
+            if (SceneManager.GetActiveScene().name == "SettingsMenu" || SceneManager.GetActiveScene().name == "SettingsSelection" || SceneManager.GetActiveScene().name == "PlayerSelection")
+            {
+                SceneManager.LoadScene(previousScene);
+                ChangeScene();
+            }
+        }
+    }
+
+    #endregion
+
+    #region CharactersManagement
     public void CharacterJoin()
     {
         GameObject[] currentPlayers = GameObject.FindGameObjectsWithTag("Player");
@@ -72,4 +115,5 @@ public class GameManager : MonoBehaviour
 
         nbPlayers--;
     }
+    #endregion
 }

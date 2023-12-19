@@ -19,4 +19,9 @@ public class Character : MonoBehaviour
         gameManager.CharacterLeft(this);
         Destroy(gameObject);
     }
+
+    public void OnCancel()
+    {
+        gameManager.ChangeToPreviousScene(this);
+    }
 }

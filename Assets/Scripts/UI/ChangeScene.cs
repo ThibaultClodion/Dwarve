@@ -5,9 +5,12 @@ using UnityEngine.SceneManagement;
 
 public class ChangeScene : MonoBehaviour
 {
-    //Change scene (to change index go to build settings ! )
     public void MoveToScene(string name)
     {
-       SceneManager.LoadScene(name);
+        //Update here the GameManager because button can't acces his script
+        GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>().ChangeScene();
+
+        //Load the new Scene
+        SceneManager.LoadScene(name);
     }
 }
