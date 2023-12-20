@@ -263,6 +263,7 @@ public class GameManager : MonoBehaviour
 
             if(getNbReady() == nbPlayers)
             {
+                ChangeScene();
                 SceneManager.LoadScene(nextScene);
             }
         }
