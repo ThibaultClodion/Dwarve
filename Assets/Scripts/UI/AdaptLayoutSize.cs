@@ -5,11 +5,9 @@ using UnityEngine.UI;
 
 public class AdaptLayoutSize : MonoBehaviour
 {
-
     private GridLayoutGroup layoutGroup;
 
-    // Start is called before the first frame update
-    void Start()
+    public void UpdateSize()
     {
         GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
         layoutGroup = GetComponent<GridLayoutGroup>();

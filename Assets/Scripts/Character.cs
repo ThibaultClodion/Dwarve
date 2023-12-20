@@ -8,6 +8,9 @@ public class Character : MonoBehaviour
 {
     private GameManager gameManager;
 
+    //Datas
+    public bool isReadyForNextScene = false;
+
     private void Awake()
     {
         gameManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
@@ -22,6 +25,13 @@ public class Character : MonoBehaviour
 
     public void OnCancel()
     {
-        gameManager.ChangeToPreviousScene(this);
+        if(!isReadyForNextScene)
+        {
+            gameManager.ChangeToPreviousScene(this);
+        }
+        else
+        {
+            gameManager.PlayerIsNotReady(this);
+        }
     }
 }

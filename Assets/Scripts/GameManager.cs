@@ -19,6 +19,7 @@ public class GameManager : MonoBehaviour
     //Multi Canvas Menu
     private bool onMultiPlayerMenu;
     private GameObject[] multiPlayerCanvas = new GameObject[4];
+    private GameObject[][] disableObjectsPlayers = new GameObject[4][];
 
     //Scene Memory
     private string actualScene;
@@ -44,14 +45,12 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(0.1f);
 
         //Update datas
-        UpdateSceneBool();
-        previousScene = actualScene;
-        actualScene = SceneManager.GetActiveScene().name;
+        UpdateSceneDatas();
 
         //If the scene is a one player canvas
         if (onOnePlayerMenu)
         {
-            //Find the main bouton even if there is no player yet he may come latter
+            //Find the main bouton even if there is no player because he may comes latter
             onePlayerButton = GameObject.FindGameObjectWithTag("MainButton");
 
             if(FindTheMainPlayer() != - 1)
@@ -66,6 +65,7 @@ public class GameManager : MonoBehaviour
             //Get the Player Canvas even if they are Disable on the scene
             int i = 0;
             GameObject[] allObjects = Resources.FindObjectsOfTypeAll<GameObject>();
+
             foreach (GameObject obj in allObjects) 
             {
                 if(obj.tag == "PlayerCanvas")
@@ -83,6 +83,33 @@ public class GameManager : MonoBehaviour
             }
         }
     }
+    public void UpdateSceneDatas()
+    {
+        previousScene = actualScene;
+        actualScene = SceneManager.GetActiveScene().name;
+        onOnePlayerMenu = SceneManager.GetActiveScene().name == "MainMenu" || SceneManager.GetActiveScene().name == "SettingsMenu" || SceneManager.GetActiveScene().name == "SettingsSelection";
+        onMultiPlayerMenu = SceneManager.GetActiveScene().name == "PlayerSelection" || SceneManager.GetActiveScene().name == "WeaponModding";
+
+        //The player are no longer ready because the scene change
+        for(int i = 0; i < 4; i++) 
+        {
+            if (characters[i] != null)
+            {
+                PlayerIsNotReady(i);
+            }
+        }
+    }
+
+    private void UpdateLayoutSize()
+    {
+        GameObject layoutGroup = GameObject.Find("GroupLayout");
+
+        if(layoutGroup != null) 
+        {
+            layoutGroup.GetComponent<AdaptLayoutSize>().UpdateSize();
+        }
+    }
+
 
     public int FindTheMainPlayer()
     {
@@ -104,6 +131,9 @@ public class GameManager : MonoBehaviour
             multiPlayerCanvas[i].transform.parent.gameObject.SetActive(true);
             //Make the player access to the buttons
             characters[i].GetComponent<MultiplayerEventSystem>().SetSelectedGameObject(multiPlayerCanvas[i]);
+
+            //Update the layout to the number of player
+            UpdateLayoutSize();
         }
     }
 
@@ -114,12 +144,6 @@ public class GameManager : MonoBehaviour
             //Desactivate the canvas
             multiPlayerCanvas[i].transform.parent.gameObject.SetActive(false);
         }
-    }
-
-    public void UpdateSceneBool()
-    {
-        onOnePlayerMenu = SceneManager.GetActiveScene().name == "MainMenu" || SceneManager.GetActiveScene().name == "SettingsMenu" || SceneManager.GetActiveScene().name == "SettingsSelection";
-        onMultiPlayerMenu = SceneManager.GetActiveScene().name == "PlayerSelection" || SceneManager.GetActiveScene().name == "WeaponModding";
     }
 
     public void ChangeToPreviousScene(Character character)
@@ -170,8 +194,10 @@ public class GameManager : MonoBehaviour
 
     public void CharacterLeft(Character character)
     {
+        int i = FindCharacter(character);
+
         //Update the characters list so there is no hole on it
-        for(int i = 0; i < nbPlayers; i++)
+        if(i == -1)
         {
             if (characters[i] == character)
             {
@@ -192,6 +218,77 @@ public class GameManager : MonoBehaviour
         }
 
         nbPlayers--;
+    }
+
+    private int getNbReady()
+    {
+        int i = 0;
+        for(int j = 0; j < 4; j++) 
+        {
+            if (characters[j] != null && characters[j].isReadyForNextScene)
+            {
+                i++;
+            }
+        }
+
+        return i;
+    }
+
+    private int FindCharacter(Character character)
+    {
+        //Find the character in the array 
+        for(int i = 0; i < 4; i++)
+        {
+            if (characters[i] == character)
+            {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    public void PlayerIsReady(int i, GameObject[] disableObjects, string nextScene)
+    {
+        if (characters[i] != null)
+        {
+            characters[i].isReadyForNextScene = true;
+
+            //Save the disablesObjects in case the player want to reactivate them
+            disableObjectsPlayers[i] = disableObjects;
+
+            for (int j = 0; j < disableObjects.Length; j++)
+            {
+                disableObjects[j].SetActive(false);
+            }
+
+            if(getNbReady() == nbPlayers)
+            {
+                SceneManager.LoadScene(nextScene);
+            }
+        }
+    }
+
+    public void PlayerIsNotReady(Character character)
+    {
+        //Back when the player wasn't ready
+
+        int i = FindCharacter(character);
+
+        if(i != -1)
+        {
+            characters[i].isReadyForNextScene = false;
+            
+            for(int j = 0; j < disableObjectsPlayers[i].Length; j++)
+            {
+                disableObjectsPlayers[i][j].SetActive(true);
+            }
+        }
+
+    }
+
+    private void PlayerIsNotReady(int i)
+    {
+       characters[i].isReadyForNextScene = false;
     }
     #endregion
 }
