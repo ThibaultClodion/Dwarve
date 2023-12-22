@@ -9,6 +9,8 @@ TagManager:
   - GameManager
   - MainButton
   - PlayerCanvas
+  - Spawn
+  - PlayerPrefab
   layers:
   - Default
   - TransparentFX

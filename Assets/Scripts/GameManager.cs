@@ -4,6 +4,7 @@ using System.IO.IsolatedStorage;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.UI;
+using UnityEngine.Rendering;
 using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
@@ -20,6 +21,9 @@ public class GameManager : MonoBehaviour
     private bool onMultiPlayerMenu;
     private GameObject[] multiPlayerCanvas = new GameObject[4];
     private GameObject[][] disableObjectsPlayers = new GameObject[4][];
+
+    //In Game
+    private bool inGameScene;
 
     //Scene Memory
     private string actualScene;
@@ -82,6 +86,27 @@ public class GameManager : MonoBehaviour
                 ActivatePlayerICanvas(j);
             }
         }
+
+        //If the scene is a Game scne
+        else if(inGameScene)
+        {
+            GameObject[] spawns = GameObject.FindGameObjectsWithTag("Spawn");
+
+            for (int i = 0; i < 4; i++)
+            {
+                if (characters[i] != null)
+                {
+                    characters[i].InitPlayer(spawns[i].transform.position);
+                }
+            }
+
+            //Update the cinemachine target group component
+            GameObject targetGroup = GameObject.Find("Target Group");
+            if(targetGroup != null)
+            {
+                targetGroup.GetComponent<TargetGroupAutomatic>().UpdateTarget();
+            }
+        }
     }
     public void UpdateSceneDatas()
     {
@@ -89,9 +114,10 @@ public class GameManager : MonoBehaviour
         actualScene = SceneManager.GetActiveScene().name;
         onOnePlayerMenu = SceneManager.GetActiveScene().name == "MainMenu" || SceneManager.GetActiveScene().name == "SettingsMenu" || SceneManager.GetActiveScene().name == "SettingsSelection";
         onMultiPlayerMenu = SceneManager.GetActiveScene().name == "PlayerSelection" || SceneManager.GetActiveScene().name == "WeaponModding";
+        inGameScene = SceneManager.GetActiveScene().name.Contains("Map");
 
         //The player are no longer ready because the scene change
-        for(int i = 0; i < 4; i++) 
+        for (int i = 0; i < 4; i++) 
         {
             if (characters[i] != null)
             {
