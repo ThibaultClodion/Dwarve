@@ -15,6 +15,6 @@ public class ReadyButton : MonoBehaviour
 
     public void IsReady()
     {
-        gameManager.PlayerIsReady(int.Parse(gameObject.name) - 1, disableObjects, nextScene);
+        gameManager.CharacterIsReady(int.Parse(gameObject.name) - 1, disableObjects, nextScene);
     }
 }

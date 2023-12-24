@@ -10,6 +10,7 @@ public class PlayerController : MonoBehaviour
     private TrailRenderer trail;
     private CharacterController controller;
     private Animator animator;
+    public Character character;
 
     [Header("Default Data")]
     //Default Data
@@ -58,7 +59,6 @@ public class PlayerController : MonoBehaviour
 
     #endregion
 
-
     #region Movement
 
     //Apply gravity
@@ -76,7 +76,7 @@ public class PlayerController : MonoBehaviour
         direction.y = velocity;
     }
 
-    //Rotate the Character to where is going
+    //Rotate the Player to where is going
     private void Rotation()
     {
         //if (rotation.magnitude <= 1f) return;
@@ -86,7 +86,7 @@ public class PlayerController : MonoBehaviour
         transform.rotation = Quaternion.Euler(0f, angle, 0f);
     }
 
-    //Move the Character
+    //Move the Player
     private void Move()
     {
         controller.Move(direction * walkSpeed * Time.deltaTime);
@@ -192,6 +192,7 @@ public class PlayerController : MonoBehaviour
 
     public void Hit()
     {
-        Debug.Log("is Hit");
+        //Give the character info that he dies
+        character.Die();
     }
 }

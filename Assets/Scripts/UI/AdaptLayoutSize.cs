@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class AdaptLayoutSize : MonoBehaviour
@@ -12,13 +13,39 @@ public class AdaptLayoutSize : MonoBehaviour
         GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
         layoutGroup = GetComponent<GridLayoutGroup>();
 
-        if(players.Length >= 3)
+        //Canvas settings
+        float width = 1172;
+        float height = 659;
+
+        if(SceneManager.GetActiveScene().name != "VictoryScene")
         {
-            layoutGroup.cellSize = new Vector2(586, 329.5f);
+            if (players.Length >= 3)
+            {
+                layoutGroup.cellSize = new Vector2(width/2, height/2);
+            }
+            else
+            {
+                layoutGroup.cellSize = new Vector2(width/2, height);
+            }
         }
         else
         {
-            layoutGroup.cellSize = new Vector2(586, 659);
+            if(players.Length == 1 )
+            {
+                layoutGroup.cellSize = new Vector2(width, 100);
+            }
+            else if (players.Length == 2)
+            {
+                layoutGroup.cellSize = new Vector2(width / 2, 100);
+            }
+            else if (players.Length == 3)
+            {
+                layoutGroup.cellSize = new Vector2(width / 3, 100);
+            }
+            else
+            {
+                layoutGroup.cellSize = new Vector2(width / 4, 100);
+            }
         }
     }
 }

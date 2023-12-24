@@ -18,9 +18,9 @@ public class Sword : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         //Trigger with another Player
-        if (other.gameObject.tag == "Player" && other.gameObject != playerGO)
+        if (other.gameObject.tag == "PlayerPrefab" && other.gameObject != playerGO)
         {
-            other.gameObject.GetComponent<CharacterOld>().Hit();
+            other.gameObject.GetComponent<PlayerController>().Hit();
         }
     }
 }

@@ -25,11 +25,12 @@ public class Character : MonoBehaviour
 
     public void OnDeviceLost()
     {
-        //Destroy the player if he left the game (ex: the controller has no batteries)
+        //Destroy the character if he left the game (ex: the controller has no batteries)
         gameManager.CharacterLeft(this);
         Destroy(gameObject);
     }
 
+    #region Input
     public void OnCancel()
     {
         if(!isReadyForNextScene)
@@ -38,7 +39,7 @@ public class Character : MonoBehaviour
         }
         else
         {
-            gameManager.PlayerIsNotReady(this);
+            gameManager.CharacterIsNotReady(this);
         }
     }
 
@@ -87,13 +88,16 @@ public class Character : MonoBehaviour
             playerController.Dash();
         }
     }
+    #endregion
 
-
-
+    #region PlayerManager
     public void InitPlayer(Vector3 pos)
     {
         player.SetActive(true);
         player.transform.position = pos;
+
+        //Give the player controller information that the character link is this one
+        playerController.character = this;
 
         //Wait before being able to move etc (This avoid strange bug also like a reset of position)
         //After make the time of waiting link to the gameManager countdown
@@ -105,4 +109,13 @@ public class Character : MonoBehaviour
         yield return new WaitForSeconds(1);
         isOnGame = true;
     }
+
+    public void Die()
+    {
+        isOnGame = false;
+        player.SetActive(false);
+
+        gameManager.PlayerDie(this);
+    }
+    #endregion
 }
