@@ -122,6 +122,13 @@ public class GameManager : MonoBehaviour
     {
         previousScene = actualScene;
         actualScene = SceneManager.GetActiveScene().name;
+
+        //To not be able to return victory menu
+        if(previousScene == "VictoryScene")
+        {
+            previousScene = "MainMenu";
+        }
+
         onOneCharacterMenu = SceneManager.GetActiveScene().name == "MainMenu" || SceneManager.GetActiveScene().name == "SettingsMenu" || SceneManager.GetActiveScene().name == "SettingsSelection";
         onMultiCharacterMenu = SceneManager.GetActiveScene().name == "PlayerSelection" || SceneManager.GetActiveScene().name == "WeaponModding" || SceneManager.GetActiveScene().name == "VictoryScene";
         inGameScene = SceneManager.GetActiveScene().name.Contains("Map");
@@ -189,6 +196,12 @@ public class GameManager : MonoBehaviour
 
             //Update the layout to the number of character
             UpdateLayoutSize();
+
+            //Init the weapon modding 
+            if(SceneManager.GetActiveScene().name == "WeaponModding")
+            {
+                characters[i].InitWeaponModding(multiCharacterCanvas[i]);
+            }
         }
     }
 
@@ -324,6 +337,38 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public void WeaponIsReady(Character character)
+    {
+        //Call when the character is on the weapon modding scene
+
+        int i = FindCharacter(character);
+
+        if (i != -1)
+        {
+            characters[i].isReadyForNextScene = true;
+
+            multiCharacterCanvas[i].SetActive(false);
+
+            if (getNbReady() == nbCharacters)
+            {
+                ChangeScene();
+                SceneManager.LoadScene("Map 0");
+            }
+        }
+    }
+
+    public void WeaponIsNotReady(Character character)
+    {
+        int i = FindCharacter(character);
+
+        if(i != -1)
+        {
+            characters[i].isReadyForNextScene = false;
+
+            multiCharacterCanvas[i].SetActive(true);
+        }
+    }
+
     public void CharacterIsNotReady(Character character)
     {
         //Back when the character wasn't ready
@@ -387,8 +432,8 @@ public class GameManager : MonoBehaviour
             }
 
         }
-        //Disable the characters movement
-        characters[indexWinner].isOnGame = false;
+        //Disable the player
+        characters[indexWinner].DisablePlayer();
         //Increase his win count
         nbVictory[indexWinner]++;
 

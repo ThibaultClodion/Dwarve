@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.UI;
+using UnityEngine.SceneManagement;
 using UnityEngine.Windows;
 
 public class Character : MonoBehaviour
@@ -16,6 +17,10 @@ public class Character : MonoBehaviour
     //Datas
     [NonSerialized] public bool isReadyForNextScene = false;
     [NonSerialized] public bool isOnGame = false;
+
+    [Header("Sword Data")]
+    //Data of his sword
+    [SerializeField] private HiltData hiltData;
 
     private void Awake()
     {
@@ -33,9 +38,17 @@ public class Character : MonoBehaviour
     #region Input
     public void OnCancel()
     {
-        if(!isReadyForNextScene)
+        if(!isReadyForNextScene && !(SceneManager.GetActiveScene().name == "WeaponModding"))
         {
             gameManager.ChangeToPreviousScene(this);
+        }
+        else if(SceneManager.GetActiveScene().name == "WeaponModding" && !isReadyForNextScene)
+        {
+            gameManager.WeaponIsReady(this);
+        }
+        else if(SceneManager.GetActiveScene().name == "WeaponModding" && isReadyForNextScene)
+        {
+            gameManager.WeaponIsNotReady(this);
         }
         else
         {
@@ -99,6 +112,9 @@ public class Character : MonoBehaviour
         //Give the player controller information that the character link is this one
         playerController.character = this;
 
+        //Init the weapon
+        hiltData.Init(playerController.hand);
+
         //Wait before being able to move etc (This avoid strange bug also like a reset of position)
         //After make the time of waiting link to the gameManager countdown
         StartCoroutine(WaitBeforePlay());
@@ -107,15 +123,25 @@ public class Character : MonoBehaviour
     IEnumerator WaitBeforePlay()
     {
         yield return new WaitForSeconds(1);
+
         isOnGame = true;
     }
 
     public void Die()
     {
+        DisablePlayer();
+        gameManager.PlayerDie(this);
+    }
+
+    public void DisablePlayer()
+    {
         isOnGame = false;
         player.SetActive(false);
+    }
 
-        gameManager.PlayerDie(this);
+    public void InitWeaponModding(GameObject parent)
+    {
+        hiltData.InitModding(parent);
     }
     #endregion
 }
