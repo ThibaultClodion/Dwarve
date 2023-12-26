@@ -119,6 +119,7 @@ GameObject:
   - component: {fileID: 6255984805558315824}
   - component: {fileID: 2579726725000770706}
   - component: {fileID: 2927112108697553363}
+  - component: {fileID: 8867396022002278361}
   m_Layer: 0
   m_Name: Character
   m_TagString: Player
@@ -244,7 +245,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerController: {fileID: 7192160134229925139}
   player: {fileID: 5237432815695493002}
-  hiltData: {fileID: 11400000, guid: fcaccde597ad8ae47ad619c08603a1a9, type: 2}
+--- !u!114 &8867396022002278361
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2088331834769185224}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c6e0f18153a49449a4aacd831c8d0b9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hilt: {fileID: 11400000, guid: fcaccde597ad8ae47ad619c08603a1a9, type: 2}
+  blades:
+  - {fileID: 11400000, guid: 2b42c7b84c8367c44ad11ac3995a63ba, type: 2}
+  emptyBlade: {fileID: 11400000, guid: c270c2293611cee439fb622a7a8e50bf, type: 2}
 --- !u!1 &5143459359284237725
 GameObject:
   m_ObjectHideFlags: 0

@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
+    #region Datas
     //Component
     private TrailRenderer trail;
     private CharacterController controller;
@@ -18,7 +19,7 @@ public class PlayerController : MonoBehaviour
     private float gravity = -9.81f;
     private float gravityMultiplier = 3.0f;
     private float velocity = 0f;
-    private bool canAttack = true;
+    public bool canAttack = true;
     private Vector3 direction;
     private Vector3 nonNullDirection;  //Allow the player to perform dash while not moving
     private Vector3 rotation;
@@ -30,6 +31,8 @@ public class PlayerController : MonoBehaviour
     private float turnSmoothVelocity;
     private float attackCooldown = 2f;
     private float dashCooldown = 3f;
+
+    #endregion
 
     #region Initialisation
     private void Awake()
@@ -43,11 +46,7 @@ public class PlayerController : MonoBehaviour
 
     void Start()
     {
-        //Allow the player to dash without having perform any mouvement
-        nonNullDirection = transform.forward.normalized;
-
-        //Initially there is no trail
-        trail.widthMultiplier = 0.0f;
+        ResetData();
     }
 
     #endregion
@@ -183,9 +182,26 @@ public class PlayerController : MonoBehaviour
     }
     #endregion
 
+    #region CharacterCommunications
+    public void ResetData()
+    {
+        canAttack = true;
+        canDash = true;
+
+        //Reset the animation
+        animator.writeDefaultValuesOnDisable = true;
+
+        //Allow the player to dash without having perform any mouvement
+        nonNullDirection = transform.forward.normalized;
+
+        //Initially there is no trail
+        trail.widthMultiplier = 0.0f;
+    }
+
     public void Hit()
     {
         //Give the character info that he dies
         character.Die();
     }
+    #endregion
 }

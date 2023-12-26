@@ -9,6 +9,7 @@ using UnityEngine.Windows;
 
 public class Character : MonoBehaviour
 {
+    #region Datas
     private GameManager gameManager;
     [SerializeField] private PlayerController playerController;
     [SerializeField] private GameObject player;
@@ -18,16 +19,18 @@ public class Character : MonoBehaviour
     [NonSerialized] public bool isReadyForNextScene = false;
     [NonSerialized] public bool isOnGame = false;
 
-    [Header("Sword Data")]
     //Data of his sword
-    [SerializeField] private HiltData hiltData;
+    private Sword sword;
+    #endregion
 
     private void Awake()
     {
         gameManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
         input = GetComponent<PlayerInput>();
+        sword = GetComponent<Sword>();
     }
 
+    #region Input
     public void OnDeviceLost()
     {
         //Destroy the character if he left the game (ex: the controller has no batteries)
@@ -35,7 +38,6 @@ public class Character : MonoBehaviour
         Destroy(gameObject);
     }
 
-    #region Input
     public void OnCancel()
     {
         if(!isReadyForNextScene && !(SceneManager.GetActiveScene().name == "WeaponModding"))
@@ -111,9 +113,10 @@ public class Character : MonoBehaviour
 
         //Give the player controller information that the character link is this one
         playerController.character = this;
+        playerController.ResetData();
 
         //Init the weapon
-        hiltData.Init(playerController.hand);
+        sword.Init(playerController.hand);
 
         //Wait before being able to move etc (This avoid strange bug also like a reset of position)
         //After make the time of waiting link to the gameManager countdown
@@ -141,7 +144,7 @@ public class Character : MonoBehaviour
 
     public void InitWeaponModding(GameObject parent)
     {
-        hiltData.InitModding(parent);
+        sword.InitModding(parent);
     }
     #endregion
 }
