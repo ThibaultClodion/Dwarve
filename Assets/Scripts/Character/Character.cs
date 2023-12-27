@@ -142,9 +142,9 @@ public class Character : MonoBehaviour
         player.SetActive(false);
     }
 
-    public void InitWeaponModding(GameObject parent)
+    public GameObject InitWeaponModding(GameObject parent)
     {
-        sword.InitModding(parent);
+        return sword.InitModding(parent);
     }
     #endregion
 }

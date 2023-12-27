@@ -126,7 +126,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &8941228894126800125
 Transform:
   m_ObjectHideFlags: 0
@@ -261,6 +261,7 @@ MonoBehaviour:
   blades:
   - {fileID: 11400000, guid: 2b42c7b84c8367c44ad11ac3995a63ba, type: 2}
   emptyBlade: {fileID: 11400000, guid: c270c2293611cee439fb622a7a8e50bf, type: 2}
+  weaponButton: {fileID: 885960112632488830, guid: 71ce7592ea2ec0944884415e6a470509, type: 3}
 --- !u!1 &5143459359284237725
 GameObject:
   m_ObjectHideFlags: 0
@@ -556,6 +557,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   character: {fileID: 2927112108697553363}
   hand: {fileID: 5143459359284237725}
+  canAttack: 1
 --- !u!1 &7590478941368339371
 GameObject:
   m_ObjectHideFlags: 0

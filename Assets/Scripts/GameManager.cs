@@ -191,16 +191,21 @@ public class GameManager : MonoBehaviour
         {
             //Activate the canvas
             multiCharacterCanvas[i].transform.parent.gameObject.SetActive(true);
+
             //Make the character access to the buttons
             characters[i].GetComponent<MultiplayerEventSystem>().SetSelectedGameObject(multiCharacterCanvas[i]);
 
             //Update the layout to the number of character
             UpdateLayoutSize();
 
-            //Init the weapon modding 
+            //The Weapon Modding menu have a different buttons system
             if(SceneManager.GetActiveScene().name == "WeaponModding")
             {
-                characters[i].InitWeaponModding(multiCharacterCanvas[i]);
+                //Get a weapon button
+                GameObject button = characters[i].InitWeaponModding(multiCharacterCanvas[i]);
+
+                //Make the character access to the weapon button
+                characters[i].GetComponent<MultiplayerEventSystem>().SetSelectedGameObject(button);
             }
         }
     }

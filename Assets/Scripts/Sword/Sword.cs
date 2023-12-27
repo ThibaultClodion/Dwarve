@@ -14,6 +14,9 @@ public class Sword : MonoBehaviour
     [SerializeField] private BladeData[] blades;
     [SerializeField] private BladeData emptyBlade;
 
+    //Canvas Datas
+    [SerializeField] private GameObject weaponButton;
+
     //Actual Prefab display
     private GameObject actualHilt;
 
@@ -26,7 +29,7 @@ public class Sword : MonoBehaviour
     }
 
     //Initialize the weapon in the modding menu
-    public void InitModding(GameObject parent)
+    public GameObject InitModding(GameObject parent)
     {
         UpdateWeaponData();
         DestroyOldWeapon();
@@ -35,6 +38,40 @@ public class Sword : MonoBehaviour
         //Change the size and position of the sword
         actualHilt.transform.localScale = new Vector3(150, 1, 150);
         actualHilt.transform.Rotate(-90, 0, 0);
+
+        return CreateButtons();
+    }
+
+    private GameObject CreateButtons()
+    {
+        GameObject mainButton = null;
+
+        foreach (Transform t in actualHilt.transform) 
+        {
+            if(t.name.StartsWith("Hilt"))
+            {
+                GameObject hilt = t.gameObject;
+
+                //Instantiate the hilt button
+                GameObject hiltButton = Instantiate(weaponButton, weaponButton.transform.position, weaponButton.transform.rotation);
+                hiltButton.transform.SetParent(hilt.transform, false);
+                hiltButton.transform.Rotate(90, 0, 0); //Rotate because the hilt is at -90
+                hiltButton.transform.localScale = new Vector3(0.007f, 0.04f, 1);
+
+                mainButton = hiltButton;
+            }
+            else if(t.name.StartsWith("Blade"))
+            {
+                GameObject blade = t.gameObject;
+
+                //Instantiate a blade button
+                GameObject bladeButton = Instantiate(weaponButton, weaponButton.transform.position, weaponButton.transform.rotation);
+                bladeButton.transform.SetParent(blade.transform, false);
+                bladeButton.transform.localScale = new Vector3(0.008f, 0.06f, 1);
+            }
+        }
+
+        return mainButton;
     }
 
     private void UpdateWeaponData()
