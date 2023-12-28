@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
     //Characters Data
-    private Character[] characters = new Character[4];
+    public Character[] characters = new Character[4];
     private int nbCharacters = 0;
 
     //Player Data
@@ -183,6 +183,11 @@ public class GameManager : MonoBehaviour
             }
         }
         return -1;
+    }
+
+    public Character GetICharacter(int i)
+    {
+        return characters[i];
     }
 
     public void ActivateCharacterICanvas(int i)

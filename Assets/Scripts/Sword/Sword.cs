@@ -102,7 +102,7 @@ public class Sword : MonoBehaviour
         blades = newBlade;
     }
 
-    private void DestroyOldWeapon()
+    public void DestroyOldWeapon()
     {
         //Destroy the old weapon
         if (actualHilt != null)
