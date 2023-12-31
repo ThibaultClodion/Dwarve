@@ -206,11 +206,7 @@ public class GameManager : MonoBehaviour
             //The Weapon Modding menu have a different buttons system
             if(SceneManager.GetActiveScene().name == "WeaponModding")
             {
-                //Get a weapon button
-                GameObject button = characters[i].InitWeaponModding(multiCharacterCanvas[i]);
-
-                //Make the character access to the weapon button
-                characters[i].GetComponent<MultiplayerEventSystem>().SetSelectedGameObject(button);
+                characters[i].InitWeaponModding(multiCharacterCanvas[i]);
             }
         }
     }

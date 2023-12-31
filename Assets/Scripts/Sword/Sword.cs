@@ -1,6 +1,10 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem.UI;
+using UnityEngine.SocialPlatforms.Impl;
+using UnityEngine.TextCore.Text;
 using UnityEngine.XR;
 
 public class Sword : MonoBehaviour
@@ -16,21 +20,30 @@ public class Sword : MonoBehaviour
 
     //Canvas Datas
     [SerializeField] private GameObject weaponButton;
+    private GameObject parentCanvas;
 
     //Actual Prefab display
     private GameObject actualHilt;
 
+    //Shop datas
+    [SerializeField] private GameObject shopPrefab;
+    private GameObject actualShop;
+    private Character character;
+    [NonSerialized] public bool isOnShop = false;
+
     // Initialize the Hilt and the Associate Blades In Game
     public void Init(GameObject hand)
     {
+        UpdateCharacterDatas();
         UpdateWeaponData();
         DestroyOldWeapon();
         InstantiateWeapon(hand);
     }
 
     //Initialize the weapon in the modding menu
-    public GameObject InitModding(GameObject parent)
+    public void InitModding(GameObject parent)
     {
+        UpdateCharacterDatas();
         UpdateWeaponData();
         DestroyOldWeapon();
         InstantiateWeapon(parent);
@@ -39,7 +52,13 @@ public class Sword : MonoBehaviour
         actualHilt.transform.localScale = new Vector3(150, 1, 150);
         actualHilt.transform.Rotate(-90, 0, 0);
 
-        return CreateButtons();
+        CreateButtons();
+    }
+
+    private void UpdateCharacterDatas()
+    {
+        //Avoid some bugs
+        character = GetComponent<Character>();
     }
 
     private GameObject CreateButtons()
@@ -70,6 +89,9 @@ public class Sword : MonoBehaviour
                 bladeButton.transform.localScale = new Vector3(0.008f, 0.06f, 1);
             }
         }
+
+        //Set the main button for the character
+        character.GetComponent<MultiplayerEventSystem>().SetSelectedGameObject(mainButton);
 
         return mainButton;
     }
@@ -113,6 +135,9 @@ public class Sword : MonoBehaviour
 
     private void InstantiateWeapon(GameObject parent)
     {
+        //update the parent canvas
+        parentCanvas = parent;
+
         //Instantiate the hilt
         actualHilt = Instantiate(hilt.hiltPrefab, hilt.hiltPrefab.transform.position, hilt.hiltPrefab.transform.rotation);
         actualHilt.transform.SetParent(parent.transform, false);
@@ -127,5 +152,33 @@ public class Sword : MonoBehaviour
 
             blade.transform.SetParent(actualHilt.transform, false);
         }
+
+        //Is Not on Shop
+        isOnShop = false;
     }
+
+    public void OpenShop()
+    {
+        actualShop = Instantiate(shopPrefab);
+        actualShop.transform.SetParent(parentCanvas.transform, false);
+
+        //Destroy the old weapon
+        DestroyOldWeapon();
+
+        //Set the selected button of the character
+        character.GetComponent<MultiplayerEventSystem>().SetSelectedGameObject(actualShop);
+        isOnShop = true;
+    }
+
+    public void CloseShop()
+    {
+        //Destroy the shop and visualize again the sword
+        if (actualShop != null)
+        {
+            Destroy(actualShop);
+            InitModding(parentCanvas);
+            isOnShop = false;
+        }
+    }
+
 }

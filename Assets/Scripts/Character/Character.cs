@@ -27,7 +27,6 @@ public class Character : MonoBehaviour
     {
         gameManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
         input = GetComponent<PlayerInput>();
-        sword = GetComponent<Sword>();
     }
 
     #region Input
@@ -43,6 +42,10 @@ public class Character : MonoBehaviour
         if(!isReadyForNextScene && !(SceneManager.GetActiveScene().name == "WeaponModding"))
         {
             gameManager.ChangeToPreviousScene(this);
+        }
+        else if(SceneManager.GetActiveScene().name == "WeaponModding" && sword.isOnShop)
+        {
+            sword.CloseShop();
         }
         else if(SceneManager.GetActiveScene().name == "WeaponModding" && !isReadyForNextScene)
         {
@@ -142,9 +145,12 @@ public class Character : MonoBehaviour
         player.SetActive(false);
     }
 
-    public GameObject InitWeaponModding(GameObject parent)
+    public void InitWeaponModding(GameObject parent)
     {
-        return sword.InitModding(parent);
+        //Make here or there are some bugs
+        sword = GetComponent<Sword>();
+
+        sword.InitModding(parent);
     }
     #endregion
 }
