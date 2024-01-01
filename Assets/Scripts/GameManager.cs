@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
+    #region Datas
     //Characters Data
     public Character[] characters = new Character[4];
     private int nbCharacters = 0;
@@ -30,6 +31,7 @@ public class GameManager : MonoBehaviour
     //Scene Memory
     private string actualScene;
     private string previousScene;
+    #endregion
 
     private void Start()
     {
@@ -96,7 +98,7 @@ public class GameManager : MonoBehaviour
             }
         }
 
-        //If the scene is a Game scne
+        //If the scene is a Game scene
         else if(inGameScene)
         {
             GameObject[] spawns = GameObject.FindGameObjectsWithTag("Spawn");
@@ -118,6 +120,8 @@ public class GameManager : MonoBehaviour
             }
         }
     }
+
+
     public void UpdateSceneDatas()
     {
         previousScene = actualScene;
@@ -170,24 +174,6 @@ public class GameManager : MonoBehaviour
         {
             layoutGroup.GetComponent<AdaptLayoutSize>().UpdateSize();
         }
-    }
-
-
-    public int FindTheMainCharacter()
-    {
-        for (int i = 0; i < 4; i++)
-        {
-            if (characters[i] != null)
-            {
-                return i;
-            }
-        }
-        return -1;
-    }
-
-    public Character GetICharacter(int i)
-    {
-        return characters[i];
     }
 
     public void ActivateCharacterICanvas(int i)
@@ -294,6 +280,36 @@ public class GameManager : MonoBehaviour
         nbCharacters--;
     }
 
+    public int FindTheMainCharacter()
+    {
+        for (int i = 0; i < 4; i++)
+        {
+            if (characters[i] != null)
+            {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    public Character GetICharacter(int i)
+    {
+        return characters[i];
+    }
+
+    private int FindCharacter(Character character)
+    {
+        //Find the character in the array 
+        for (int i = 0; i < 4; i++)
+        {
+            if (characters[i] == character)
+            {
+                return i;
+            }
+        }
+        return -1;
+    }
+
     private int getNbReady()
     {
         int i = 0;
@@ -306,19 +322,6 @@ public class GameManager : MonoBehaviour
         }
 
         return i;
-    }
-
-    private int FindCharacter(Character character)
-    {
-        //Find the character in the array 
-        for(int i = 0; i < 4; i++)
-        {
-            if (characters[i] == character)
-            {
-                return i;
-            }
-        }
-        return -1;
     }
 
     public void CharacterIsReady(int i, GameObject[] disableObjects, string nextScene)

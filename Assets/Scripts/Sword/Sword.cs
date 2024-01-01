@@ -9,6 +9,7 @@ using UnityEngine.XR;
 
 public class Sword : MonoBehaviour
 {
+    #region Datas
     //Hilt Data
     [SerializeField] private HiltData hilt;
     private Transform[] slotsTransform;
@@ -30,7 +31,9 @@ public class Sword : MonoBehaviour
     private GameObject actualShop;
     private Character character;
     [NonSerialized] public bool isOnShop = false;
+    #endregion
 
+    #region WeaponSpawn
     // Initialize the Hilt and the Associate Blades In Game
     public void Init(GameObject hand)
     {
@@ -59,41 +62,6 @@ public class Sword : MonoBehaviour
     {
         //Avoid some bugs
         character = GetComponent<Character>();
-    }
-
-    private GameObject CreateButtons()
-    {
-        GameObject mainButton = null;
-
-        foreach (Transform t in actualHilt.transform) 
-        {
-            if(t.name.StartsWith("Hilt"))
-            {
-                GameObject hilt = t.gameObject;
-
-                //Instantiate the hilt button
-                GameObject hiltButton = Instantiate(weaponButton, weaponButton.transform.position, weaponButton.transform.rotation);
-                hiltButton.transform.SetParent(hilt.transform, false);
-                hiltButton.transform.Rotate(90, 0, 0); //Rotate because the hilt is at -90
-                hiltButton.transform.localScale = new Vector3(0.007f, 0.04f, 1);
-
-                mainButton = hiltButton;
-            }
-            else if(t.name.StartsWith("Blade"))
-            {
-                GameObject blade = t.gameObject;
-
-                //Instantiate a blade button
-                GameObject bladeButton = Instantiate(weaponButton, weaponButton.transform.position, weaponButton.transform.rotation);
-                bladeButton.transform.SetParent(blade.transform, false);
-                bladeButton.transform.localScale = new Vector3(0.008f, 0.06f, 1);
-            }
-        }
-
-        //Set the main button for the character
-        character.GetComponent<MultiplayerEventSystem>().SetSelectedGameObject(mainButton);
-
-        return mainButton;
     }
 
     private void UpdateWeaponData()
@@ -133,6 +101,39 @@ public class Sword : MonoBehaviour
         }
     }
 
+    private void CreateButtons()
+    {
+        GameObject mainButton = null;
+
+        foreach (Transform t in actualHilt.transform) 
+        {
+            if(t.name.StartsWith("Hilt"))
+            {
+                GameObject hilt = t.gameObject;
+
+                //Instantiate the hilt button
+                GameObject hiltButton = Instantiate(weaponButton, weaponButton.transform.position, weaponButton.transform.rotation);
+                hiltButton.transform.SetParent(hilt.transform, false);
+                hiltButton.transform.Rotate(90, 0, 0); //Rotate because the hilt is at -90
+                hiltButton.transform.localScale = new Vector3(0.007f, 0.04f, 1);
+
+                mainButton = hiltButton;
+            }
+            else if(t.name.StartsWith("Blade"))
+            {
+                GameObject blade = t.gameObject;
+
+                //Instantiate a blade button
+                GameObject bladeButton = Instantiate(weaponButton, weaponButton.transform.position, weaponButton.transform.rotation);
+                bladeButton.transform.SetParent(blade.transform, false);
+                bladeButton.transform.localScale = new Vector3(0.008f, 0.06f, 1);
+            }
+        }
+
+        //Set the main button for the character
+        character.GetComponent<MultiplayerEventSystem>().SetSelectedGameObject(mainButton);
+    }
+
     private void InstantiateWeapon(GameObject parent)
     {
         //update the parent canvas
@@ -152,11 +153,10 @@ public class Sword : MonoBehaviour
 
             blade.transform.SetParent(actualHilt.transform, false);
         }
-
-        //Is Not on Shop
-        isOnShop = false;
     }
+    #endregion
 
+    #region Shop
     public void OpenShop()
     {
         actualShop = Instantiate(shopPrefab);
@@ -180,5 +180,5 @@ public class Sword : MonoBehaviour
             isOnShop = false;
         }
     }
-
+    #endregion
 }
