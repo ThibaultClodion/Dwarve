@@ -7,14 +7,31 @@ using UnityEngine.UI;
 
 public class ObjectButton : MonoBehaviour, ISelectHandler// required interface when using the OnSelect method.
 {
-    //In Canvas Datas
+    #region Datas
+    [Header("Canvas Datas")]
     [SerializeField] private Scrollbar scrollbar;
     [SerializeField] private Image image;
-    [SerializeField] private TextMeshProUGUI text;
+    [SerializeField] private TextMeshProUGUI buttonText;
 
-    //Object Datas
+    [Header("Object Datas")]
     [SerializeField] private Sprite objectSprite;
-    [SerializeField] private string objectDescription;
+    [SerializeField] private int price;
+    [SerializeField] private string Objectname;
+    #endregion
+
+    private void Awake()
+    {
+        //Get the number of space
+        int nbSpace = 4 - price.ToString().Length;
+        string space = "";
+        for(int i = 0; i < nbSpace; i++) 
+        {
+            space += "  ";
+        }
+
+        //Change the button Text
+        buttonText.text = price.ToString() +  space + "| " + Objectname;
+    }
 
     //Do this when the selectable UI object is selected.
     public void OnSelect(BaseEventData eventData)
@@ -25,7 +42,5 @@ public class ObjectButton : MonoBehaviour, ISelectHandler// required interface w
 
         //Change the description
         image.sprite = objectSprite;
-        text.text = objectDescription;
-
     }
 }
