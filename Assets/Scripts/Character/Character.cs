@@ -19,8 +19,9 @@ public class Character : MonoBehaviour
     [NonSerialized] public bool isReadyForNextScene = false;
     [NonSerialized] public bool isOnGame = false;
 
-    //Data of his sword
+    //Character Data
     private Sword sword;
+    private int money = 5;
     #endregion
 
     private void Awake()
@@ -144,7 +145,9 @@ public class Character : MonoBehaviour
         isOnGame = false;
         player.SetActive(false);
     }
+    #endregion
 
+    #region SwordManagement
     public void InitWeaponModding(GameObject parent)
     {
         //Make here or there are some bugs
@@ -152,5 +155,29 @@ public class Character : MonoBehaviour
 
         sword.InitModding(parent);
     }
+
+    public bool MoneyExchange(int amount)
+    {
+        //Exchange amount of money and return if the transaction succeed
+        if(amount > 0)
+        {
+            money += amount;
+            return true;
+        }
+        else
+        {
+            if(money < -amount)
+            {
+                return false;
+            }
+            else
+            {
+                money -= amount;
+                return true;
+            }
+        }
+    }
+
+    public int GetMoney() { return money; } 
     #endregion
 }

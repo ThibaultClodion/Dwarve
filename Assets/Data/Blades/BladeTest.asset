@@ -14,3 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bladePrefab: {fileID: 7396511936795345720, guid: 680d93af64b43a7469c110897f3e9eb3, type: 3}
   bladeHeight: 1
+  price: 5
+  sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+  nameDisplay: Blade Test
