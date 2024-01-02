@@ -60,12 +60,16 @@ public class ObjectButton : MonoBehaviour, ISelectHandler// required interface w
         image.sprite = blade.sprite;
     }
 
-    //Do this when the Button is Click
-    public void OnClick(BaseEventData eventData) 
+    public void BuyObject() 
     {
-        if (character.GetMoney() > blade.price)
+        if (character.GetMoney() >= blade.price)
         {
-            GetComponent<Image>().color = new Color(1, 1, 1, 0.3f);
+            //Change the sword and update the money
+            character.GetSword().ChangeBlade(blade);
+            character.MoneyExchange(-blade.price);
+
+            //Close the shop to visualize the new weapon
+            character.GetSword().CloseShop();
         }
     }
 }

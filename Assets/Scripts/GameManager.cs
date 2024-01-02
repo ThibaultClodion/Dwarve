@@ -450,6 +450,16 @@ public class GameManager : MonoBehaviour
         if (nbVictory[indexWinner] == NbRoundToWin)
         {
             SceneManager.LoadScene("VictoryScene");
+
+            //Reset All Characters Datas
+            for(int i =0; i < 4; i++)
+            {
+                if (characters[i] != null)
+                {
+                    characters[i].ResetDatas();
+                }
+            }
+
             StartCoroutine(VictorySceneUpdate(indexWinner));
             ChangeScene();
         }

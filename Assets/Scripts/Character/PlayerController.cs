@@ -196,6 +196,13 @@ public class PlayerController : MonoBehaviour
 
         //Initially there is no trail
         trail.widthMultiplier = 0.0f;
+
+        //Reset Rotation and direction
+        nonNullDirection = new Vector3(0, 0, 0);
+        direction = new Vector3(0, 0, 0);
+        rotation = new Vector3(0, 0, 0);
+        transform.rotation = Quaternion.Euler(0f, 0f, 0f);
+
     }
 
     public void Hit()

@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Burst.CompilerServices;
 using UnityEngine;
 using UnityEngine.InputSystem.UI;
 using UnityEngine.SocialPlatforms.Impl;
@@ -10,30 +11,41 @@ using UnityEngine.XR;
 public class Sword : MonoBehaviour
 {
     #region Datas
-    //Hilt Data
+    [Header("Hilt Data")]
     [SerializeField] private HiltData hilt;
     private Transform[] slotsTransform;
     private int nbSlots;
 
-    //Blades Data
+    [Header("Blades Data")]
     [SerializeField] private BladeData[] blades;
     [SerializeField] private BladeData emptyBlade;
+    private int actualBladeIndex;
 
-    //Canvas Datas
+    [Header("Canvas Data")]
     [SerializeField] private GameObject weaponButton;
     private GameObject parentCanvas;
 
     //Actual Prefab display
     private GameObject actualHilt;
 
-    //Shop datas
+    [Header("Shop Data")]
     [SerializeField] private GameObject shopPrefab;
     private GameObject actualShop;
     private Character character;
     [NonSerialized] public bool isOnShop = false;
+
+    [Header("Reset Datas")]
+    [SerializeField] private HiltData defaultHilt;
+    [SerializeField] private BladeData[] defaultBlades;
     #endregion
 
     #region WeaponSpawn
+    public void ResetSword()
+    {
+        hilt = defaultHilt;
+        blades = defaultBlades;
+    }
+
     // Initialize the Hilt and the Associate Blades In Game
     public void Init(GameObject hand)
     {
@@ -105,6 +117,8 @@ public class Sword : MonoBehaviour
     {
         GameObject mainButton = null;
 
+        int indexBlade = 0;
+
         foreach (Transform t in actualHilt.transform) 
         {
             if(t.name.StartsWith("Hilt"))
@@ -127,6 +141,10 @@ public class Sword : MonoBehaviour
                 GameObject bladeButton = Instantiate(weaponButton, weaponButton.transform.position, weaponButton.transform.rotation);
                 bladeButton.transform.SetParent(blade.transform, false);
                 bladeButton.transform.localScale = new Vector3(0.008f, 0.06f, 1);
+
+                //Give the index of blade
+                bladeButton.GetComponent<BladeShopButton>().bladeIndex = indexBlade;
+                indexBlade++;
             }
         }
 
@@ -157,8 +175,11 @@ public class Sword : MonoBehaviour
     #endregion
 
     #region Shop
-    public void OpenShop()
+    public void OpenShop(int bladeIndex)
     {
+        //Update the blade index
+        actualBladeIndex = bladeIndex;
+
         actualShop = Instantiate(shopPrefab);
         actualShop.transform.SetParent(parentCanvas.transform, false);
 
@@ -178,6 +199,15 @@ public class Sword : MonoBehaviour
             Destroy(actualShop);
             InitModding(parentCanvas);
             isOnShop = false;
+            actualBladeIndex = 0;
+        }
+    }
+
+    public void ChangeBlade(BladeData blade)
+    {
+        if(actualBladeIndex < blades.Length)
+        {
+            blades[actualBladeIndex] = blade;
         }
     }
     #endregion

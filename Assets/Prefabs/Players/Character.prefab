@@ -245,6 +245,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerController: {fileID: 7192160134229925139}
   player: {fileID: 5237432815695493002}
+  sword: {fileID: 8867396022002278361}
 --- !u!114 &8867396022002278361
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -263,6 +264,9 @@ MonoBehaviour:
   emptyBlade: {fileID: 11400000, guid: c270c2293611cee439fb622a7a8e50bf, type: 2}
   weaponButton: {fileID: 885960112632488830, guid: 71ce7592ea2ec0944884415e6a470509, type: 3}
   shopPrefab: {fileID: 3479860816946163805, guid: 27b6b1bd404593f4bbf36cab7db266a5, type: 3}
+  defaultHilt: {fileID: 11400000, guid: fcaccde597ad8ae47ad619c08603a1a9, type: 2}
+  defaultBlades:
+  - {fileID: 11400000, guid: 2b42c7b84c8367c44ad11ac3995a63ba, type: 2}
 --- !u!1 &5143459359284237725
 GameObject:
   m_ObjectHideFlags: 0

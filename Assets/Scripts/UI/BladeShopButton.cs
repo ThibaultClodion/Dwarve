@@ -5,6 +5,7 @@ using UnityEngine.InputSystem.UI;
 
 public class BladeShopButton : MonoBehaviour
 {
+    public int bladeIndex = 0;
 
     public void OpenShop()
     {
@@ -13,8 +14,8 @@ public class BladeShopButton : MonoBehaviour
         GameManager gameManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
 
         Character character = gameManager.GetICharacter(int.Parse(this.transform.parent.parent.parent.name) - 1);
-        Sword sword = character.GetComponent<Sword>();
+        Sword sword = character.GetSword();
 
-        sword.OpenShop();
+        sword.OpenShop(bladeIndex);
     }
 }

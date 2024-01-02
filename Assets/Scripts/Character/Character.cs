@@ -20,7 +20,7 @@ public class Character : MonoBehaviour
     [NonSerialized] public bool isOnGame = false;
 
     //Character Data
-    private Sword sword;
+    [SerializeField] private Sword sword;
     private int money = 5;
     #endregion
 
@@ -145,6 +145,13 @@ public class Character : MonoBehaviour
         isOnGame = false;
         player.SetActive(false);
     }
+
+    public void ResetDatas()
+    {
+        //Reset the data to start a new game
+        money = 5;
+        sword.ResetSword();
+    }
     #endregion
 
     #region SwordManagement
@@ -172,12 +179,13 @@ public class Character : MonoBehaviour
             }
             else
             {
-                money -= amount;
+                money += amount;
                 return true;
             }
         }
     }
 
     public int GetMoney() { return money; } 
+    public Sword GetSword() { return sword; }
     #endregion
 }
