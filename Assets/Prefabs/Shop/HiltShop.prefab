@@ -785,9 +785,9 @@ MonoBehaviour:
   scrollbar: {fileID: 2457871847910065412}
   image: {fileID: 1502355298982990702}
   buttonText: {fileID: 3845090357221283965}
-  blade: {fileID: 11400000, guid: 2b42c7b84c8367c44ad11ac3995a63ba, type: 2}
-  hilt: {fileID: 0}
-  isABlade: 1
+  blade: {fileID: 0}
+  hilt: {fileID: 11400000, guid: fcaccde597ad8ae47ad619c08603a1a9, type: 2}
+  isABladeShop: 0
 --- !u!1 &1255048850639175327
 GameObject:
   m_ObjectHideFlags: 0
@@ -937,9 +937,9 @@ MonoBehaviour:
   scrollbar: {fileID: 2457871847910065412}
   image: {fileID: 1502355298982990702}
   buttonText: {fileID: 3163337478891312654}
-  blade: {fileID: 11400000, guid: 2b42c7b84c8367c44ad11ac3995a63ba, type: 2}
-  hilt: {fileID: 0}
-  isABlade: 1
+  blade: {fileID: 0}
+  hilt: {fileID: 11400000, guid: fcaccde597ad8ae47ad619c08603a1a9, type: 2}
+  isABladeShop: 0
 --- !u!1 &2319817378641580304
 GameObject:
   m_ObjectHideFlags: 0
@@ -1393,9 +1393,9 @@ MonoBehaviour:
   scrollbar: {fileID: 2457871847910065412}
   image: {fileID: 1502355298982990702}
   buttonText: {fileID: 4593635077734929901}
-  blade: {fileID: 11400000, guid: 2b42c7b84c8367c44ad11ac3995a63ba, type: 2}
-  hilt: {fileID: 0}
-  isABlade: 1
+  blade: {fileID: 0}
+  hilt: {fileID: 11400000, guid: fcaccde597ad8ae47ad619c08603a1a9, type: 2}
+  isABladeShop: 0
 --- !u!1 &3479860816946163805
 GameObject:
   m_ObjectHideFlags: 0
@@ -1409,7 +1409,7 @@ GameObject:
   - component: {fileID: 9064117283863999034}
   - component: {fileID: 5560537860690539858}
   m_Layer: 5
-  m_Name: BladeShop
+  m_Name: HiltShop
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1667,9 +1667,9 @@ MonoBehaviour:
   scrollbar: {fileID: 2457871847910065412}
   image: {fileID: 1502355298982990702}
   buttonText: {fileID: 499568782624628383}
-  blade: {fileID: 11400000, guid: 2b42c7b84c8367c44ad11ac3995a63ba, type: 2}
-  hilt: {fileID: 0}
-  isABlade: 1
+  blade: {fileID: 0}
+  hilt: {fileID: 11400000, guid: fcaccde597ad8ae47ad619c08603a1a9, type: 2}
+  isABladeShop: 0
 --- !u!1 &4120285151400579024
 GameObject:
   m_ObjectHideFlags: 0
@@ -2123,9 +2123,9 @@ MonoBehaviour:
   scrollbar: {fileID: 2457871847910065412}
   image: {fileID: 1502355298982990702}
   buttonText: {fileID: 818539850453250696}
-  blade: {fileID: 11400000, guid: 2b42c7b84c8367c44ad11ac3995a63ba, type: 2}
-  hilt: {fileID: 0}
-  isABlade: 1
+  blade: {fileID: 0}
+  hilt: {fileID: 11400000, guid: fcaccde597ad8ae47ad619c08603a1a9, type: 2}
+  isABladeShop: 0
 --- !u!1 &6063035164198480334
 GameObject:
   m_ObjectHideFlags: 0
@@ -2275,9 +2275,9 @@ MonoBehaviour:
   scrollbar: {fileID: 2457871847910065412}
   image: {fileID: 1502355298982990702}
   buttonText: {fileID: 4725352415162961043}
-  blade: {fileID: 11400000, guid: 2b42c7b84c8367c44ad11ac3995a63ba, type: 2}
-  hilt: {fileID: 0}
-  isABlade: 1
+  blade: {fileID: 0}
+  hilt: {fileID: 11400000, guid: fcaccde597ad8ae47ad619c08603a1a9, type: 2}
+  isABladeShop: 0
 --- !u!1 &6094647043667673607
 GameObject:
   m_ObjectHideFlags: 0
@@ -2858,9 +2858,9 @@ MonoBehaviour:
   scrollbar: {fileID: 2457871847910065412}
   image: {fileID: 1502355298982990702}
   buttonText: {fileID: 5190745697254740634}
-  blade: {fileID: 11400000, guid: 2b42c7b84c8367c44ad11ac3995a63ba, type: 2}
-  hilt: {fileID: 0}
-  isABlade: 1
+  blade: {fileID: 0}
+  hilt: {fileID: 11400000, guid: fcaccde597ad8ae47ad619c08603a1a9, type: 2}
+  isABladeShop: 0
 --- !u!1 &7278780946359058020
 GameObject:
   m_ObjectHideFlags: 0
@@ -3010,9 +3010,9 @@ MonoBehaviour:
   scrollbar: {fileID: 2457871847910065412}
   image: {fileID: 1502355298982990702}
   buttonText: {fileID: 1528221870471435095}
-  blade: {fileID: 11400000, guid: 2b42c7b84c8367c44ad11ac3995a63ba, type: 2}
-  hilt: {fileID: 0}
-  isABlade: 1
+  blade: {fileID: 0}
+  hilt: {fileID: 11400000, guid: fcaccde597ad8ae47ad619c08603a1a9, type: 2}
+  isABladeShop: 0
 --- !u!1 &7396410932699871077
 GameObject:
   m_ObjectHideFlags: 0
@@ -3386,9 +3386,9 @@ MonoBehaviour:
   scrollbar: {fileID: 2457871847910065412}
   image: {fileID: 1502355298982990702}
   buttonText: {fileID: 6894468863714986329}
-  blade: {fileID: 11400000, guid: c270c2293611cee439fb622a7a8e50bf, type: 2}
-  hilt: {fileID: 0}
-  isABlade: 1
+  blade: {fileID: 0}
+  hilt: {fileID: 11400000, guid: 9be47237eaaafc74aabe965f5600cdc2, type: 2}
+  isABladeShop: 0
 --- !u!1 &7880688890487141640
 GameObject:
   m_ObjectHideFlags: 0
@@ -3538,9 +3538,9 @@ MonoBehaviour:
   scrollbar: {fileID: 2457871847910065412}
   image: {fileID: 1502355298982990702}
   buttonText: {fileID: 4691247644815834123}
-  blade: {fileID: 11400000, guid: 2b42c7b84c8367c44ad11ac3995a63ba, type: 2}
-  hilt: {fileID: 0}
-  isABlade: 1
+  blade: {fileID: 0}
+  hilt: {fileID: 11400000, guid: fcaccde597ad8ae47ad619c08603a1a9, type: 2}
+  isABladeShop: 0
 --- !u!1 &7889303031442355783
 GameObject:
   m_ObjectHideFlags: 0
@@ -3824,9 +3824,9 @@ MonoBehaviour:
   scrollbar: {fileID: 2457871847910065412}
   image: {fileID: 1502355298982990702}
   buttonText: {fileID: 2012398891957061241}
-  blade: {fileID: 11400000, guid: 2b42c7b84c8367c44ad11ac3995a63ba, type: 2}
-  hilt: {fileID: 0}
-  isABlade: 1
+  blade: {fileID: 0}
+  hilt: {fileID: 11400000, guid: fcaccde597ad8ae47ad619c08603a1a9, type: 2}
+  isABladeShop: 0
 --- !u!1 &8208937464090643111
 GameObject:
   m_ObjectHideFlags: 0

@@ -8,5 +8,8 @@ public class HiltData : ScriptableObject
 {
     //Hilt Data
     public GameObject hiltPrefab;
+    public int price;
+    public string nameDisplay;
+    public Sprite sprite;
 
 }

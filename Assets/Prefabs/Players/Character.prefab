@@ -258,12 +258,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4c6e0f18153a49449a4aacd831c8d0b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hilt: {fileID: 11400000, guid: fcaccde597ad8ae47ad619c08603a1a9, type: 2}
-  blades:
-  - {fileID: 11400000, guid: 2b42c7b84c8367c44ad11ac3995a63ba, type: 2}
   emptyBlade: {fileID: 11400000, guid: c270c2293611cee439fb622a7a8e50bf, type: 2}
-  weaponButton: {fileID: 885960112632488830, guid: 71ce7592ea2ec0944884415e6a470509, type: 3}
-  shopPrefab: {fileID: 3479860816946163805, guid: 27b6b1bd404593f4bbf36cab7db266a5, type: 3}
+  bladeButton: {fileID: 885960112632488830, guid: 71ce7592ea2ec0944884415e6a470509, type: 3}
+  hiltButton: {fileID: 885960112632488830, guid: 9810aa6eb5501874e9050c9db5857a94, type: 3}
+  bladeShop: {fileID: 3479860816946163805, guid: 27b6b1bd404593f4bbf36cab7db266a5, type: 3}
+  hiltShop: {fileID: 3479860816946163805, guid: 00657e3ad04c9884d84f7611fa0552ca, type: 3}
   defaultHilt: {fileID: 11400000, guid: fcaccde597ad8ae47ad619c08603a1a9, type: 2}
   defaultBlades:
   - {fileID: 11400000, guid: 2b42c7b84c8367c44ad11ac3995a63ba, type: 2}

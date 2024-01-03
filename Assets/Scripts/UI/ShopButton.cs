@@ -1,11 +1,13 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem.UI;
 
-public class BladeShopButton : MonoBehaviour
+public class ShopButton : MonoBehaviour
 {
-    public int bladeIndex = 0;
+    public bool isBladeShop;
+    [NonSerialized] public int bladeIndex = 0;
 
     public void OpenShop()
     {
@@ -16,6 +18,6 @@ public class BladeShopButton : MonoBehaviour
         Character character = gameManager.GetICharacter(int.Parse(this.transform.parent.parent.parent.name) - 1);
         Sword sword = character.GetSword();
 
-        sword.OpenShop(bladeIndex);
+        sword.OpenShop(bladeIndex, isBladeShop);
     }
 }

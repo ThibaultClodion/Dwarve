@@ -12,9 +12,9 @@ GameObject:
   - component: {fileID: 4044197227338551197}
   - component: {fileID: 4377531792845166077}
   - component: {fileID: 4009730312948454327}
-  - component: {fileID: -5631717062135914248}
+  - component: {fileID: -6185501590074155688}
   m_Layer: 0
-  m_Name: BladeShopButton
+  m_Name: HiltShopButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -121,8 +121,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: -5631717062135914248}
-        m_TargetAssemblyTypeName: BladeShop, Assembly-CSharp
+      - m_Target: {fileID: -6185501590074155688}
+        m_TargetAssemblyTypeName: ShopButton, Assembly-CSharp
         m_MethodName: OpenShop
         m_Mode: 1
         m_Arguments:
@@ -133,7 +133,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &-5631717062135914248
+--- !u!114 &-6185501590074155688
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -145,4 +145,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b91167ad9dda82c4287280819bb3c4f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shop: {fileID: 8064085597721696563, guid: 27b6b1bd404593f4bbf36cab7db266a5, type: 3}
+  isBladeShop: 0

@@ -1,35 +1,37 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.CompilerServices;
 using Unity.Burst.CompilerServices;
 using UnityEngine;
 using UnityEngine.InputSystem.UI;
 using UnityEngine.SocialPlatforms.Impl;
 using UnityEngine.TextCore.Text;
+using UnityEngine.UI;
 using UnityEngine.XR;
 
 public class Sword : MonoBehaviour
 {
     #region Datas
-    [Header("Hilt Data")]
-    [SerializeField] private HiltData hilt;
+    private HiltData hilt;
     private Transform[] slotsTransform;
     private int nbSlots;
+    private GameObject actualHilt;     //Actual Prefab display
 
-    [Header("Blades Data")]
-    [SerializeField] private BladeData[] blades;
+    private BladeData[] blades;
     [SerializeField] private BladeData emptyBlade;
     private int actualBladeIndex;
 
     [Header("Canvas Data")]
-    [SerializeField] private GameObject weaponButton;
+    [SerializeField] private GameObject bladeButton;
+    [SerializeField] private GameObject hiltButton;
     private GameObject parentCanvas;
-
-    //Actual Prefab display
-    private GameObject actualHilt;
+    public GameObject[] buttons;
 
     [Header("Shop Data")]
-    [SerializeField] private GameObject shopPrefab;
+    [SerializeField] private GameObject bladeShop;
+    [SerializeField] private GameObject hiltShop;
     private GameObject actualShop;
     private Character character;
     [NonSerialized] public bool isOnShop = false;
@@ -78,6 +80,15 @@ public class Sword : MonoBehaviour
 
     private void UpdateWeaponData()
     {
+        if(hilt == null)
+        {
+            hilt = defaultHilt;
+        }
+        if(blades == null)
+        {
+            blades = defaultBlades;
+        }
+
         Transform[] childrenTransform = hilt.hiltPrefab.GetComponentsInChildren<Transform>();
 
         //The two first are not slot so I ignore it
@@ -115,9 +126,11 @@ public class Sword : MonoBehaviour
 
     private void CreateButtons()
     {
-        GameObject mainButton = null;
-
+        //Initialisation of Datas
         int indexBlade = 0;
+        int i = 0;
+        buttons = new GameObject[nbSlots + 1];
+
 
         foreach (Transform t in actualHilt.transform) 
         {
@@ -126,30 +139,215 @@ public class Sword : MonoBehaviour
                 GameObject hilt = t.gameObject;
 
                 //Instantiate the hilt button
-                GameObject hiltButton = Instantiate(weaponButton, weaponButton.transform.position, weaponButton.transform.rotation);
-                hiltButton.transform.SetParent(hilt.transform, false);
-                hiltButton.transform.Rotate(90, 0, 0); //Rotate because the hilt is at -90
-                hiltButton.transform.localScale = new Vector3(0.007f, 0.04f, 1);
+                GameObject button = Instantiate(hiltButton, bladeButton.transform.position, bladeButton.transform.rotation);
+                button.transform.SetParent(hilt.transform, false);
+                button.transform.Rotate(90, 0, 0); //Rotate because the hilt is at -90
+                button.transform.localScale = new Vector3(0.007f, 0.04f, 1);
 
-                mainButton = hiltButton;
+                //Add the buttons to the array
+                buttons[i] = button;
+                i++;
+
+                //Set the hilt button for the character
+                character.GetComponent<MultiplayerEventSystem>().SetSelectedGameObject(button);
             }
             else if(t.name.StartsWith("Blade"))
             {
                 GameObject blade = t.gameObject;
 
                 //Instantiate a blade button
-                GameObject bladeButton = Instantiate(weaponButton, weaponButton.transform.position, weaponButton.transform.rotation);
-                bladeButton.transform.SetParent(blade.transform, false);
-                bladeButton.transform.localScale = new Vector3(0.008f, 0.06f, 1);
+                GameObject button = Instantiate(bladeButton, bladeButton.transform.position, bladeButton.transform.rotation);
+                button.transform.SetParent(blade.transform, false);
+                button.transform.localScale = new Vector3(0.008f, 0.06f, 1);
+
+                //Add the buttons to the array
+                buttons[i] = button;
+                i++;
 
                 //Give the index of blade
-                bladeButton.GetComponent<BladeShopButton>().bladeIndex = indexBlade;
+                button.GetComponent<ShopButton>().bladeIndex = indexBlade;
                 indexBlade++;
             }
         }
 
-        //Set the main button for the character
-        character.GetComponent<MultiplayerEventSystem>().SetSelectedGameObject(mainButton);
+        ButtonNavigation();
+    }
+
+    private void ButtonNavigation()
+    {
+        //Affect the good navigation between buttons
+
+        //Find the buttons positions
+        float[] xButtonPosition = new float[buttons.Length];
+        float[] yButtonPosition = new float[buttons.Length];
+
+        for(int i = 0; i < buttons.Length; i++) 
+        {
+            xButtonPosition[i] = buttons[i].transform.parent.position.x;
+            yButtonPosition[i] = buttons[i].transform.parent.position.y;
+        }
+
+        float OnUpPos = yButtonPosition.Max();
+        float OnLeftPos = xButtonPosition.Min();
+        float OnDownPos = yButtonPosition.Min();
+        float OnRightPos = xButtonPosition.Max();
+
+
+        //Set selected on down, up, left or right
+        for(int i = 0 ; i < buttons.Length ; i++) 
+        {
+            //Create a new navigation explicit
+            Navigation NewNav = new Navigation();
+            NewNav.mode = Navigation.Mode.Explicit;
+
+            //If the button is not on the Top
+            if (yButtonPosition[i] != OnUpPos)
+            {
+                float nearestUpDistance = 0f;
+                float nearestHorizontalDistance = 10000f; //Sentry
+                int bestIndex = 0;
+
+                //Find the nearest up distance
+                for (int j = 0 ; j < buttons.Length ; j++) 
+                {
+                    if (yButtonPosition[j] > yButtonPosition[i])
+                    {
+                        if(nearestUpDistance == 0f || Mathf.Abs(yButtonPosition[j] - yButtonPosition[i]) < nearestUpDistance) 
+                        {
+                            nearestUpDistance = Mathf.Abs(yButtonPosition[j] - yButtonPosition[i]);
+                        }
+                    }
+                }
+
+                //Find the nearest horizontal button
+                for(int j = 0;  j < buttons.Length ; j++) 
+                {
+                    if(Mathf.Abs(yButtonPosition[j] - yButtonPosition[i]) == nearestUpDistance)
+                    {
+                        if (Mathf.Abs(xButtonPosition[j] - xButtonPosition[i]) < nearestHorizontalDistance)
+                        {
+                            nearestHorizontalDistance = Mathf.Abs(xButtonPosition[j] - xButtonPosition[i]);
+                            bestIndex = j;
+                        }
+                    }
+                }
+
+                //Affect the good button
+                NewNav.selectOnUp = buttons[bestIndex].GetComponent<Button>();
+            }
+
+
+            //If the button is not on the Bot
+            if (yButtonPosition[i] != OnDownPos)
+            {
+                float nearestDownDistance = 0f;
+                float nearestHorizontalDistance = 10000f; //Sentry
+                int bestIndex = 0;
+
+                //Find the nearest up distance
+                for (int j = 0; j < buttons.Length; j++)
+                {
+                    if (yButtonPosition[j] < yButtonPosition[i])
+                    {
+                        if (nearestDownDistance == 0f || Mathf.Abs(yButtonPosition[j] - yButtonPosition[i]) < nearestDownDistance)
+                        {
+                            nearestDownDistance = Mathf.Abs(yButtonPosition[j] - yButtonPosition[i]);
+                        }
+                    }
+                }
+
+                //Find the nearest horizontal button
+                for (int j = 0; j < buttons.Length; j++)
+                {
+                    if (Mathf.Abs(yButtonPosition[j] - yButtonPosition[i]) == nearestDownDistance)
+                    {
+                        if (Mathf.Abs(xButtonPosition[j] - xButtonPosition[i]) < nearestHorizontalDistance)
+                        {
+                            nearestHorizontalDistance = Mathf.Abs(xButtonPosition[j] - xButtonPosition[i]);
+                            bestIndex = j;
+                        }
+                    }
+                }
+
+                //Affect the good button
+                NewNav.selectOnDown = buttons[bestIndex].GetComponent<Button>();
+            }
+
+            //If the button is not on the Left
+            if (xButtonPosition[i] != OnLeftPos)
+            {
+                float nearestLeftDistance = 0f;
+                float nearestVerticalDistance = 10000f; //Sentry
+                int bestIndex = 0;
+
+                //Find the nearest up distance
+                for (int j = 0; j < buttons.Length; j++)
+                {
+                    if (xButtonPosition[j] < xButtonPosition[i])
+                    {
+                        if (nearestLeftDistance == 0f || Mathf.Abs(xButtonPosition[j] - xButtonPosition[i]) < nearestLeftDistance)
+                        {
+                            nearestLeftDistance = Mathf.Abs(xButtonPosition[j] - xButtonPosition[i]);
+                        }
+                    }
+                }
+
+                //Find the nearest vertical button
+                for (int j = 0; j < buttons.Length; j++)
+                {
+                    if (Mathf.Abs(xButtonPosition[j] - xButtonPosition[i]) == nearestLeftDistance)
+                    {
+                        if (Mathf.Abs(yButtonPosition[j] - yButtonPosition[i]) < nearestVerticalDistance)
+                        {
+                            nearestVerticalDistance = Mathf.Abs(yButtonPosition[j] - yButtonPosition[i]);
+                            bestIndex = j;
+                        }
+                    }
+                }
+
+                //Affect the good button
+                NewNav.selectOnLeft = buttons[bestIndex].GetComponent<Button>();
+            }
+
+            //If the button is not on the Right
+            if (xButtonPosition[i] != OnRightPos)
+            {
+                float nearestRightDistance = 0f;
+                float nearestVerticalDistance = 10000f; //Sentry
+                int bestIndex = 0;
+
+                //Find the nearest up distance
+                for (int j = 0; j < buttons.Length; j++)
+                {
+                    if (xButtonPosition[j] > xButtonPosition[i])
+                    {
+                        if (nearestRightDistance == 0f || Mathf.Abs(xButtonPosition[j] - xButtonPosition[i]) < nearestRightDistance)
+                        {
+                            nearestRightDistance = Mathf.Abs(xButtonPosition[j] - xButtonPosition[i]);
+                        }
+                    }
+                }
+
+                //Find the nearest vertical button
+                for (int j = 0; j < buttons.Length; j++)
+                {
+                    if (Mathf.Abs(xButtonPosition[j] - xButtonPosition[i]) == nearestRightDistance)
+                    {
+                        if (Mathf.Abs(yButtonPosition[j] - yButtonPosition[i]) < nearestVerticalDistance)
+                        {
+                            nearestVerticalDistance = Mathf.Abs(yButtonPosition[j] - yButtonPosition[i]);
+                            bestIndex = j;
+                        }
+                    }
+                }
+
+                //Affect the good button
+                NewNav.selectOnRight = buttons[bestIndex].GetComponent<Button>();
+            }
+
+            //Affect the navigation to the button
+            buttons[i].GetComponent<Button>().navigation = NewNav;
+        }
     }
 
     private void InstantiateWeapon(GameObject parent)
@@ -175,12 +373,20 @@ public class Sword : MonoBehaviour
     #endregion
 
     #region Shop
-    public void OpenShop(int bladeIndex)
+    public void OpenShop(int bladeIndex, bool isBladeShop)
     {
         //Update the blade index
         actualBladeIndex = bladeIndex;
 
-        actualShop = Instantiate(shopPrefab);
+        if(isBladeShop)
+        {
+            actualShop = Instantiate(bladeShop);
+        }
+        else
+        {
+            actualShop = Instantiate(hiltShop);
+        }
+
         actualShop.transform.SetParent(parentCanvas.transform, false);
 
         //Destroy the old weapon
@@ -209,6 +415,11 @@ public class Sword : MonoBehaviour
         {
             blades[actualBladeIndex] = blade;
         }
+    }
+
+    public void ChangeHilt(HiltData hilt)
+    {
+        this.hilt = hilt;
     }
     #endregion
 }

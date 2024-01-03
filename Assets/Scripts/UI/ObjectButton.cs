@@ -19,21 +19,37 @@ public class ObjectButton : MonoBehaviour, ISelectHandler// required interface w
     [Header("Object Datas")]
     [SerializeField] private BladeData blade;
     [SerializeField] private HiltData hilt;
-    [SerializeField] private bool isABlade;
+    [SerializeField] private bool isABladeShop;
     #endregion
 
     private void Awake()
     {
-        //Get the number of space
-        int nbSpace = 4 - blade.price.ToString().Length;
-        string space = "";
-        for (int i = 0; i < nbSpace; i++)
+        if(isABladeShop) 
         {
-            space += "  ";
-        }
+            //Get the number of space
+            int nbSpace = 4 - blade.price.ToString().Length;
+            string space = "";
+            for (int i = 0; i < nbSpace; i++)
+            {
+                space += "  ";
+            }
 
-        //Change the button Text
-        buttonText.text = blade.price.ToString() + space + "| " + blade.nameDisplay;
+            //Change the button Text
+            buttonText.text = blade.price.ToString() + space + "| " + blade.nameDisplay;
+        }
+        else
+        {
+            //Get the number of space
+            int nbSpace = 4 - hilt.price.ToString().Length;
+            string space = "";
+            for (int i = 0; i < nbSpace; i++)
+            {
+                space += "  ";
+            }
+
+            //Change the button Text
+            buttonText.text = hilt.price.ToString() + space + "| " + hilt.nameDisplay;
+        }
     }
 
     private void Start()
@@ -42,10 +58,21 @@ public class ObjectButton : MonoBehaviour, ISelectHandler// required interface w
         GameManager gameManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
         character = gameManager.GetICharacter(int.Parse(this.transform.parent.parent.parent.parent.parent.name) - 1);
 
-        //Change the button color if the character has not enough money
-        if(character.GetMoney() < blade.price) 
+        if(isABladeShop)
         {
-            GetComponent<Image>().color = new Color(1, 1, 1, 0.3f);
+            //Change the button color if the character has not enough money
+            if (character.GetMoney() < blade.price)
+            {
+                GetComponent<Image>().color = new Color(1, 1, 1, 0.3f);
+            }
+        }
+        else
+        {
+            //Change the button color if the character has not enough money
+            if (character.GetMoney() < hilt.price)
+            {
+                GetComponent<Image>().color = new Color(1, 1, 1, 0.3f);
+            }
         }
     }
 
@@ -57,19 +84,41 @@ public class ObjectButton : MonoBehaviour, ISelectHandler// required interface w
         scrollbar.value = 1 - (int.Parse(this.transform.name)) / (nbButtons - 1);
 
         //Change the description
-        image.sprite = blade.sprite;
+        if (isABladeShop)
+        {
+            image.sprite = blade.sprite;
+        }
+        else
+        {
+            image.sprite = hilt.sprite;
+        }
     }
 
     public void BuyObject() 
     {
-        if (character.GetMoney() >= blade.price)
+        if(isABladeShop)
         {
-            //Change the sword and update the money
-            character.GetSword().ChangeBlade(blade);
-            character.MoneyExchange(-blade.price);
+            if (character.GetMoney() >= blade.price)
+            {
+                //Change the blade and update the money
+                character.GetSword().ChangeBlade(blade);
+                character.MoneyExchange(-blade.price);
 
-            //Close the shop to visualize the new weapon
-            character.GetSword().CloseShop();
+                //Close the shop to visualize the new weapon
+                character.GetSword().CloseShop();
+            }
+        }
+        else
+        {
+            if (character.GetMoney() >= hilt.price)
+            {
+                //Change the hilt and update the money
+                character.GetSword().ChangeHilt(hilt);
+                character.MoneyExchange(-hilt.price);
+
+                //Close the shop to visualize the new weapon
+                character.GetSword().CloseShop();
+            }
         }
     }
 }

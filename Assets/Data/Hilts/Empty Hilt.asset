@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9db8a8a1e8dff6742b0048839a9b1a73, type: 3}
-  m_Name: HiltTest
+  m_Name: Empty Hilt
   m_EditorClassIdentifier: 
-  hiltPrefab: {fileID: 8984723269120229395, guid: 430eb7cfa3f3a3b499a64316e96f820b, type: 3}
-  price: 5
-  nameDisplay: Basic Hilt
-  sprite: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
+  hiltPrefab: {fileID: 4510825691793108805, guid: 3382d900a3c17f84bbc3ee03fa595af8, type: 3}
+  price: 10
+  nameDisplay: Empty Hilt
+  sprite: {fileID: 10901, guid: 0000000000000000f000000000000000, type: 0}
