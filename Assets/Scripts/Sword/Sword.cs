@@ -22,19 +22,24 @@ public class Sword : MonoBehaviour
     private BladeData[] blades;
     [SerializeField] private BladeData emptyBlade;
     private int actualBladeIndex;
+    
 
-    [Header("Canvas Data")]
+    [Header("Canvas Datas")]
     [SerializeField] private GameObject bladeButton;
     [SerializeField] private GameObject hiltButton;
     private GameObject parentCanvas;
     public GameObject[] buttons;
 
-    [Header("Shop Data")]
+    [Header("Shop Datas")]
     [SerializeField] private GameObject bladeShop;
     [SerializeField] private GameObject hiltShop;
     private GameObject actualShop;
     private Character character;
     [NonSerialized] public bool isOnShop = false;
+    [NonSerialized] public bool isSwitchingBlade = false;
+    [NonSerialized] public int currentSwitchIndex;
+    private int previousSwitchIndex;
+
 
     [Header("Reset Datas")]
     [SerializeField] private HiltData defaultHilt;
@@ -165,15 +170,15 @@ public class Sword : MonoBehaviour
                 i++;
 
                 //Give the index of blade
-                button.GetComponent<ShopButton>().bladeIndex = indexBlade;
+                button.GetComponent<SwordButton>().bladeIndex = indexBlade;
                 indexBlade++;
             }
         }
 
-        ButtonNavigation();
+        ButtonNavigationUpdate();
     }
 
-    private void ButtonNavigation()
+    private void ButtonNavigationUpdate()
     {
         //Affect the good navigation between buttons
 
@@ -368,11 +373,109 @@ public class Sword : MonoBehaviour
             blade.transform.position += blade.transform.up * (blades[i].bladeHeight / 2);
 
             blade.transform.SetParent(actualHilt.transform, false);
+
         }
     }
     #endregion
 
-    #region Shop
+    #region Buttons
+
+    public void SwitchBlade()
+    {
+        if(!isSwitchingBlade)
+        {
+            GameObject currentSelected = character.GetComponent<MultiplayerEventSystem>().currentSelectedGameObject;
+
+            if (currentSelected.name.Contains("Blade"))
+            {
+                isSwitchingBlade = true;
+                currentSwitchIndex = GetButtonIndex(currentSelected);
+                previousSwitchIndex = currentSwitchIndex;
+            }
+        }
+    }
+
+    public void SelectSwitch()
+    {
+        int selectIndex = GetButtonIndex(character.GetComponent<MultiplayerEventSystem>().currentSelectedGameObject);
+
+        //Return to Initial State
+        SwitchTwoBlades(currentSwitchIndex, previousSwitchIndex);
+        currentSwitchIndex = previousSwitchIndex;
+
+        //Switch the two concern blades
+        SwitchTwoBlades(currentSwitchIndex, selectIndex);
+        currentSwitchIndex = selectIndex;
+
+        //Select the good button and update the navigation
+        StartCoroutine(selectButton(buttons[currentSwitchIndex]));
+        ButtonNavigationUpdate();
+    }
+
+    private int GetButtonIndex(GameObject blade)
+    {
+        for(int i  = 0; i < buttons.Length; ++i) 
+        {
+            if (buttons[i] == blade)
+            {
+                return i;
+            }
+        }
+
+        return -1;
+    }
+
+    private void SwitchTwoBlades(int index1, int index2)
+    {
+        //Be carreful that blades array has -1 because it doesn't count the hilt
+
+        //Switch Blade Data
+        BladeData temp = blades[index1-1];
+        blades[index1-1] = blades[index2-1];
+        blades[index2-1] = temp;
+
+        //Switch button Data
+        GameObject tempButton = buttons[index1];
+        buttons[index1] = buttons[index2];
+        buttons[index2] = tempButton;
+
+        //Switch position
+        GameObject blade1 = buttons[index1].transform.parent.gameObject;
+        GameObject blade2 = buttons[index2].transform.parent.gameObject;
+
+        Vector3 copyPos = blade1.transform.position - (blade1.transform.up * (blades[index1 - 1].bladeHeight / 2));
+        Quaternion copyRot = blade1.transform.rotation;
+
+        blade1.transform.SetPositionAndRotation(blade2.transform.position - (blade2.transform.up * (blades[index2 - 1].bladeHeight / 2)), blade2.transform.rotation);
+        blade1.transform.position += blade1.transform.up * (blades[index1 - 1].bladeHeight / 2);
+
+        blade2.transform.SetPositionAndRotation(copyPos, copyRot);
+        blade2.transform.position += blade2.transform.up * (blades[index2 - 1].bladeHeight / 2);
+    }
+
+    public void ResetSwitchBlade()
+    {
+        isSwitchingBlade = false;
+
+        //Return to Initial State
+        SwitchTwoBlades(currentSwitchIndex, previousSwitchIndex);
+        currentSwitchIndex = previousSwitchIndex;
+
+        ButtonNavigationUpdate();
+    }
+
+    public void ConfirmSwitchBlade()
+    {
+        isSwitchingBlade = false;
+    }
+
+    IEnumerator selectButton(GameObject button)
+    {
+        yield return new WaitForEndOfFrame();
+        button.GetComponent<SwordButton>().canBeSelect = false;
+        character.GetComponent<MultiplayerEventSystem>().SetSelectedGameObject(button);
+    }
+
     public void OpenShop(int bladeIndex, bool isBladeShop)
     {
         //Update the blade index

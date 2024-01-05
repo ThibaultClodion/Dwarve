@@ -47,11 +47,15 @@ public class Character : MonoBehaviour
         else if(SceneManager.GetActiveScene().name == "WeaponModding" && sword.isOnShop)
         {
             sword.CloseShop();
-        }
+        }           
+        else if(SceneManager.GetActiveScene().name == "WeaponModding" && sword.isSwitchingBlade)
+        {
+            sword.ResetSwitchBlade();
+        }        
         else if(SceneManager.GetActiveScene().name == "WeaponModding" && !isReadyForNextScene)
         {
             gameManager.WeaponIsReady(this);
-        }
+        }        
         else if(SceneManager.GetActiveScene().name == "WeaponModding" && isReadyForNextScene)
         {
             gameManager.WeaponIsNotReady(this);
@@ -96,6 +100,15 @@ public class Character : MonoBehaviour
         if (isOnGame)
         {
             playerController.Attack();
+        }
+    }
+
+    public void OnNorthButton()
+    {
+        //Make the sword on switching blades state
+        if (!isOnGame)
+        {
+            sword.SwitchBlade();
         }
     }
 

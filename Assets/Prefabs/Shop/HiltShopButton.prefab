@@ -145,4 +145,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b91167ad9dda82c4287280819bb3c4f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isBladeShop: 0
+  isBlade: 0
+  canBeSelect: 0
