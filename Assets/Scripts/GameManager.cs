@@ -1,6 +1,7 @@
 using System.Collections;
 using TMPro;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.UI;
 using UnityEngine.SceneManagement;
 
@@ -8,7 +9,7 @@ public class GameManager : MonoBehaviour
 {
     #region Datas
     //Characters Data
-    public Character[] characters = new Character[4];
+    private Character[] characters = new Character[4];
     private int nbCharacters = 0;
 
     //Player Data
@@ -31,7 +32,15 @@ public class GameManager : MonoBehaviour
     //Scene Memory
     private string actualScene;
     private string previousScene;
+
+    //Manager
+    private PlayerInputManager playerInputManager;
     #endregion
+
+    private void Awake()
+    {
+        playerInputManager = GetComponent<PlayerInputManager>();
+    }
 
     private void Start()
     {
@@ -136,6 +145,16 @@ public class GameManager : MonoBehaviour
         onOneCharacterMenu = SceneManager.GetActiveScene().name == "MainMenu" || SceneManager.GetActiveScene().name == "SettingsMenu" || SceneManager.GetActiveScene().name == "SettingsSelection";
         onMultiCharacterMenu = SceneManager.GetActiveScene().name == "PlayerSelection" || SceneManager.GetActiveScene().name == "WeaponModding" || SceneManager.GetActiveScene().name == "VictoryScene";
         inGameScene = SceneManager.GetActiveScene().name.Contains("Map");
+
+        //Told when characters could join
+        if(SceneManager.GetActiveScene().name == "MainMenu" || SceneManager.GetActiveScene().name == "SettingsMenu" || SceneManager.GetActiveScene().name == "PlayerSelection")
+        {
+            playerInputManager.EnableJoining();
+        }
+        else
+        {
+            playerInputManager.DisableJoining();
+        }
 
         //The character are no longer ready because the scene change
         for (int i = 0; i < 4; i++) 

@@ -227,7 +227,7 @@ public class Sword : MonoBehaviour
                 //Find the nearest horizontal button
                 for(int j = 0;  j < buttons.Length ; j++) 
                 {
-                    if(Mathf.Abs(yButtonPosition[j] - yButtonPosition[i]) == nearestUpDistance)
+                    if(Mathf.Abs(yButtonPosition[j] - yButtonPosition[i]) == nearestUpDistance && yButtonPosition[j] > yButtonPosition[i])
                     {
                         if (Mathf.Abs(xButtonPosition[j] - xButtonPosition[i]) < nearestHorizontalDistance)
                         {
@@ -252,7 +252,7 @@ public class Sword : MonoBehaviour
                 //Find the nearest up distance
                 for (int j = 0; j < buttons.Length; j++)
                 {
-                    if (yButtonPosition[j] < yButtonPosition[i])
+                    if (xButtonPosition[j] < xButtonPosition[i])
                     {
                         if (nearestDownDistance == 0f || Mathf.Abs(yButtonPosition[j] - yButtonPosition[i]) < nearestDownDistance)
                         {
@@ -264,7 +264,7 @@ public class Sword : MonoBehaviour
                 //Find the nearest horizontal button
                 for (int j = 0; j < buttons.Length; j++)
                 {
-                    if (Mathf.Abs(yButtonPosition[j] - yButtonPosition[i]) == nearestDownDistance)
+                    if (Mathf.Abs(yButtonPosition[j] - yButtonPosition[i]) == nearestDownDistance && xButtonPosition[j] < xButtonPosition[i])
                     {
                         if (Mathf.Abs(xButtonPosition[j] - xButtonPosition[i]) < nearestHorizontalDistance)
                         {
@@ -300,7 +300,7 @@ public class Sword : MonoBehaviour
                 //Find the nearest vertical button
                 for (int j = 0; j < buttons.Length; j++)
                 {
-                    if (Mathf.Abs(xButtonPosition[j] - xButtonPosition[i]) == nearestLeftDistance)
+                    if (Mathf.Abs(xButtonPosition[j] - xButtonPosition[i]) == nearestLeftDistance && xButtonPosition[j] < xButtonPosition[i])
                     {
                         if (Mathf.Abs(yButtonPosition[j] - yButtonPosition[i]) < nearestVerticalDistance)
                         {
@@ -336,7 +336,7 @@ public class Sword : MonoBehaviour
                 //Find the nearest vertical button
                 for (int j = 0; j < buttons.Length; j++)
                 {
-                    if (Mathf.Abs(xButtonPosition[j] - xButtonPosition[i]) == nearestRightDistance)
+                    if (Mathf.Abs(xButtonPosition[j] - xButtonPosition[i]) == nearestRightDistance && xButtonPosition[j] > xButtonPosition[i])
                     {
                         if (Mathf.Abs(yButtonPosition[j] - yButtonPosition[i]) < nearestVerticalDistance)
                         {
