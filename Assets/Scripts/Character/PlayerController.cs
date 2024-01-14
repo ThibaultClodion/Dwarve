@@ -11,6 +11,7 @@ public class PlayerController : MonoBehaviour
     private TrailRenderer trail;
     private CharacterController controller;
     private Animator animator;
+    private AnimatorOverrideController animatorOverrideController;
     public Character character;
 
     [Header("Default Data")]
@@ -24,6 +25,7 @@ public class PlayerController : MonoBehaviour
     private Vector3 nonNullDirection;  //Allow the player to perform dash while not moving
     private Vector3 rotation;
     private bool canDash = true;
+    private bool haveAttackAnimation = false;   //Tell if the player have an attack animation because make it on ResetData cause errors.
 
     //Player Data
     private float walkSpeed = 10f;
@@ -41,6 +43,9 @@ public class PlayerController : MonoBehaviour
         trail = GetComponent<TrailRenderer>();
         controller = GetComponent<CharacterController>();
         animator = GetComponent<Animator>();
+
+        animatorOverrideController = new AnimatorOverrideController(animator.runtimeAnimatorController);
+        animator.runtimeAnimatorController = animatorOverrideController;
     }
 
 
@@ -99,15 +104,19 @@ public class PlayerController : MonoBehaviour
         Vector2 moveInput = pos.Get<Vector2>();
         direction = new Vector3(moveInput.x, 0f, moveInput.y).normalized;
 
+        //Rotate the player toward his movement
+        rotation = new Vector3(moveInput.x, moveInput.y, 0f).normalized;
+
         if (direction.magnitude >= 1f)
         {
             nonNullDirection = direction;
         }
     }
 
-    // Change the Rotation
+    // Change the Rotation with second joystick
     public void ChangeRotate(InputValue pos, bool useKeyboard)
     {
+        /*
         //Define the position that the player want to reach
         Vector2 rotateInput = pos.Get<Vector2>();
 
@@ -127,6 +136,7 @@ public class PlayerController : MonoBehaviour
                 rotation = new Vector3(rotateInput.x, rotateInput.y, 0f).normalized;
             }
         }
+        */
     }
     #endregion
 
@@ -135,6 +145,13 @@ public class PlayerController : MonoBehaviour
     {
         if (canAttack)
         {
+            //Set the attack animation link to the hilt
+            if (!haveAttackAnimation)
+            {
+                animatorOverrideController["Attack"] = character.GetSword().GetHilt().attack;
+                haveAttackAnimation = true;
+            }
+
             canAttack = false;
             StartCoroutine(AttackCooldown());
             animator.SetTrigger("Attack");
@@ -190,6 +207,8 @@ public class PlayerController : MonoBehaviour
 
         //Reset the animation
         animator.writeDefaultValuesOnDisable = true;
+        haveAttackAnimation = false;
+        
 
         //Allow the player to dash without having perform any mouvement
         nonNullDirection = transform.forward.normalized;

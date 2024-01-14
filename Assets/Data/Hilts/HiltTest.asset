@@ -16,3 +16,4 @@ MonoBehaviour:
   price: 5
   nameDisplay: Basic Hilt
   sprite: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
+  attack: {fileID: 7400000, guid: 3618d14fbe9f91943997f24255c06e4b, type: 2}

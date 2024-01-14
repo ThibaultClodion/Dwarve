@@ -525,4 +525,11 @@ public class Sword : MonoBehaviour
         this.hilt = hilt;
     }
     #endregion
+
+    #region Access
+    public HiltData GetHilt()
+    {
+        return hilt;
+    }
+    #endregion
 }

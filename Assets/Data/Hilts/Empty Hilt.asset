@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Empty Hilt
   m_EditorClassIdentifier: 
   hiltPrefab: {fileID: 4510825691793108805, guid: 3382d900a3c17f84bbc3ee03fa595af8, type: 3}
-  price: 10
+  price: 2
   nameDisplay: Empty Hilt
   sprite: {fileID: 10901, guid: 0000000000000000f000000000000000, type: 0}
+  attack: {fileID: 7400000, guid: 07032289ed67dc74e89fa5b2ae471d59, type: 2}
