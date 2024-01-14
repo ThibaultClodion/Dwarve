@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9db8a8a1e8dff6742b0048839a9b1a73, type: 3}
-  m_Name: HiltTest
+  m_Name: Cross Hilt
   m_EditorClassIdentifier: 
-  hiltPrefab: {fileID: 8984723269120229395, guid: 430eb7cfa3f3a3b499a64316e96f820b, type: 3}
-  price: 2
-  nameDisplay: Basic Hilt
-  sprite: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
-  length: 0.2
-  attack: {fileID: 7400000, guid: 3618d14fbe9f91943997f24255c06e4b, type: 2}
+  hiltPrefab: {fileID: 8984723269120229395, guid: 7d1e716bc56b45249961fca617327829, type: 3}
+  price: 3
+  nameDisplay: Cross
+  sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
+  length: 1
+  attack: {fileID: 7400000, guid: 7ddc200de1ada614b82c233aa267fecb, type: 2}

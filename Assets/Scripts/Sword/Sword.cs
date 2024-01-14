@@ -1,15 +1,9 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using Unity.Burst.CompilerServices;
 using UnityEngine;
 using UnityEngine.InputSystem.UI;
-using UnityEngine.SocialPlatforms.Impl;
-using UnityEngine.TextCore.Text;
 using UnityEngine.UI;
-using UnityEngine.XR;
 
 public class Sword : MonoBehaviour
 {
@@ -60,6 +54,9 @@ public class Sword : MonoBehaviour
         UpdateWeaponData();
         DestroyOldWeapon();
         InstantiateWeapon(hand);
+
+        //Change hilt position
+        actualHilt.transform.position += actualHilt.transform.forward * (hilt.length / 2 - 0.1f);
     }
 
     //Initialize the weapon in the modding menu

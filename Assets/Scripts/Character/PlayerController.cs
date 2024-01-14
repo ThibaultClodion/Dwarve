@@ -31,8 +31,8 @@ public class PlayerController : MonoBehaviour
     private float walkSpeed = 10f;
     private float turnSmoothTime = 0.05f;
     private float turnSmoothVelocity;
-    private float attackCooldown = 2f;
-    private float dashCooldown = 3f;
+    private float attackCooldown = 0.5f;
+    private float dashCooldown = 1f;
 
     #endregion
 
@@ -104,12 +104,12 @@ public class PlayerController : MonoBehaviour
         Vector2 moveInput = pos.Get<Vector2>();
         direction = new Vector3(moveInput.x, 0f, moveInput.y).normalized;
 
-        //Rotate the player toward his movement
-        rotation = new Vector3(moveInput.x, moveInput.y, 0f).normalized;
-
         if (direction.magnitude >= 1f)
         {
             nonNullDirection = direction;
+
+            //Rotate the player toward his movement
+            rotation = new Vector3(moveInput.x, moveInput.y, 0f).normalized;
         }
     }
 
@@ -148,7 +148,7 @@ public class PlayerController : MonoBehaviour
             //Set the attack animation link to the hilt
             if (!haveAttackAnimation)
             {
-                animatorOverrideController["Attack"] = character.GetSword().GetHilt().attack;
+                animatorOverrideController["DefaultAttack"] = character.GetSword().GetHilt().attack;
                 haveAttackAnimation = true;
             }
 

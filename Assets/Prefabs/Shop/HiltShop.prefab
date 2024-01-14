@@ -121,7 +121,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1072828363127068966}
   m_Direction: 2
   m_Value: 1
-  m_Size: 0.8362944
+  m_Size: 0.83756346
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -786,7 +786,7 @@ MonoBehaviour:
   image: {fileID: 1502355298982990702}
   buttonText: {fileID: 3845090357221283965}
   blade: {fileID: 0}
-  hilt: {fileID: 11400000, guid: fcaccde597ad8ae47ad619c08603a1a9, type: 2}
+  hilt: {fileID: 11400000, guid: ec89eb687a6f9184daf9aa3160007bce, type: 2}
   isABladeShop: 0
 --- !u!1 &1255048850639175327
 GameObject:

@@ -264,8 +264,9 @@ MonoBehaviour:
   buttons: []
   bladeShop: {fileID: 3479860816946163805, guid: 27b6b1bd404593f4bbf36cab7db266a5, type: 3}
   hiltShop: {fileID: 3479860816946163805, guid: 00657e3ad04c9884d84f7611fa0552ca, type: 3}
-  defaultHilt: {fileID: 11400000, guid: fcaccde597ad8ae47ad619c08603a1a9, type: 2}
+  defaultHilt: {fileID: 11400000, guid: ec89eb687a6f9184daf9aa3160007bce, type: 2}
   defaultBlades:
+  - {fileID: 11400000, guid: 2b42c7b84c8367c44ad11ac3995a63ba, type: 2}
   - {fileID: 11400000, guid: 2b42c7b84c8367c44ad11ac3995a63ba, type: 2}
 --- !u!1 &5143459359284237725
 GameObject:
@@ -292,7 +293,7 @@ Transform:
   m_GameObject: {fileID: 5143459359284237725}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.65, y: 0, z: 0}
+  m_LocalPosition: {x: 0.65, y: 0, z: 0.4}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:

@@ -11,6 +11,7 @@ public class HiltData : ScriptableObject
     public int price;
     public string nameDisplay;
     public Sprite sprite;
+    public float length;
 
     public AnimationClip attack;
 
