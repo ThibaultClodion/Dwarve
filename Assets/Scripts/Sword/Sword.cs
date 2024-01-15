@@ -56,7 +56,7 @@ public class Sword : MonoBehaviour
         InstantiateWeapon(hand);
 
         //Change hilt position
-        actualHilt.transform.position += actualHilt.transform.forward * (hilt.length / 2 - 0.1f);
+        actualHilt.transform.position += actualHilt.transform.forward * (hilt.length / 2);
     }
 
     //Initialize the weapon in the modding menu
@@ -527,6 +527,16 @@ public class Sword : MonoBehaviour
     public HiltData GetHilt()
     {
         return hilt;
+    }
+
+    public float GetWeight()
+    {
+        float var = 0.0f;
+        for(int i = 0; i < blades.Length; i++)
+        {
+            var += blades[i].weight;
+        }
+        return var;
     }
     #endregion
 }

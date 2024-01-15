@@ -13,8 +13,9 @@ MonoBehaviour:
   m_Name: Cross Hilt
   m_EditorClassIdentifier: 
   hiltPrefab: {fileID: 8984723269120229395, guid: 7d1e716bc56b45249961fca617327829, type: 3}
+  length: 1
+  attackCooldown: 0.6
+  attack: {fileID: 7400000, guid: 7ddc200de1ada614b82c233aa267fecb, type: 2}
   price: 3
   nameDisplay: Cross
   sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
-  length: 1
-  attack: {fileID: 7400000, guid: 7ddc200de1ada614b82c233aa267fecb, type: 2}

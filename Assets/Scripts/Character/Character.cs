@@ -130,10 +130,10 @@ public class Character : MonoBehaviour
 
         //Give the player controller information that the character link is this one
         playerController.character = this;
-        playerController.ResetData();
-
         //Init the weapon
         sword.Init(playerController.hand);
+        //Reset player datas
+        playerController.ResetData();
 
         //Wait before being able to move etc (This avoid strange bug also like a reset of position)
         //After make the time of waiting link to the gameManager countdown

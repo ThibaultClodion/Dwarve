@@ -31,8 +31,9 @@ public class PlayerController : MonoBehaviour
     private float walkSpeed = 10f;
     private float turnSmoothTime = 0.05f;
     private float turnSmoothVelocity;
-    private float attackCooldown = 0.5f;
-    private float dashCooldown = 1f;
+    private float attackCooldown;
+    private float attackSpeedMultiplier;
+    private float dashCooldown = 0.6f;
 
     #endregion
 
@@ -145,12 +146,17 @@ public class PlayerController : MonoBehaviour
     {
         if (canAttack)
         {
-            //Set the attack animation link to the hilt
+            /*//Set the attack animation link to the hilt and it speed
             if (!haveAttackAnimation)
             {
+                //Reset attackCooldown and attackSpeed to correspond actual sword
+                attackCooldown = character.GetSword().GetHilt().attackCooldown * (character.GetSword().GetWeight() / 10 + 1);
+                attackSpeed = character.GetSword().GetWeight() / 10 + 1;
+
                 animatorOverrideController["DefaultAttack"] = character.GetSword().GetHilt().attack;
+                animator.SetFloat("AttackAnimationSpeed", attackSpeed);
                 haveAttackAnimation = true;
-            }
+            }*/
 
             canAttack = false;
             StartCoroutine(AttackCooldown());
@@ -185,10 +191,10 @@ public class PlayerController : MonoBehaviour
 
 
         //End the trail at this precise cooldown to look good I don't find precise formula
-        yield return new WaitForSeconds(dashCooldown - 1.75f);
+        yield return new WaitForSeconds(dashCooldown - 0.25f);
         trail.widthMultiplier = 0f;
 
-        yield return new WaitForSeconds(1.75f);
+        yield return new WaitForSeconds(0.25f);
         canDash = true;
     }
 
@@ -208,7 +214,17 @@ public class PlayerController : MonoBehaviour
         //Reset the animation
         animator.writeDefaultValuesOnDisable = true;
         haveAttackAnimation = false;
-        
+
+        //Reset attackCooldown and attackSpeed
+        attackCooldown = character.GetSword().GetHilt().attackCooldown * (character.GetSword().GetWeight() / 10 + 1);
+        attackSpeedMultiplier = character.GetSword().GetWeight() / 10 + 1;
+
+        //Reset the attack animation link to the hilt and it speed
+        animatorOverrideController["DefaultAttack"] = character.GetSword().GetHilt().attack;
+        animator.SetFloat("AttackAnimationSpeed", attackSpeedMultiplier);
+
+        //Actualize walking speed
+        walkSpeed = 10 - character.GetSword().GetWeight() / 15;
 
         //Allow the player to dash without having perform any mouvement
         nonNullDirection = transform.forward.normalized;
@@ -221,7 +237,6 @@ public class PlayerController : MonoBehaviour
         direction = new Vector3(0, 0, 0);
         rotation = new Vector3(0, 0, 0);
         transform.rotation = Quaternion.Euler(0f, 0f, 0f);
-
     }
 
     public void Hit()
