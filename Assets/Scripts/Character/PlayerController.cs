@@ -25,7 +25,6 @@ public class PlayerController : MonoBehaviour
     private Vector3 nonNullDirection;  //Allow the player to perform dash while not moving
     private Vector3 rotation;
     private bool canDash = true;
-    private bool haveAttackAnimation = false;   //Tell if the player have an attack animation because make it on ResetData cause errors.
 
     //Player Data
     private float walkSpeed = 10f;
@@ -146,18 +145,6 @@ public class PlayerController : MonoBehaviour
     {
         if (canAttack)
         {
-            /*//Set the attack animation link to the hilt and it speed
-            if (!haveAttackAnimation)
-            {
-                //Reset attackCooldown and attackSpeed to correspond actual sword
-                attackCooldown = character.GetSword().GetHilt().attackCooldown * (character.GetSword().GetWeight() / 10 + 1);
-                attackSpeed = character.GetSword().GetWeight() / 10 + 1;
-
-                animatorOverrideController["DefaultAttack"] = character.GetSword().GetHilt().attack;
-                animator.SetFloat("AttackAnimationSpeed", attackSpeed);
-                haveAttackAnimation = true;
-            }*/
-
             canAttack = false;
             StartCoroutine(AttackCooldown());
             animator.SetTrigger("Attack");
@@ -213,7 +200,6 @@ public class PlayerController : MonoBehaviour
 
         //Reset the animation
         animator.writeDefaultValuesOnDisable = true;
-        haveAttackAnimation = false;
 
         //Reset attackCooldown and attackSpeed
         attackCooldown = character.GetSword().GetHilt().attackCooldown * (character.GetSword().GetWeight() / 10 + 1);
@@ -224,7 +210,7 @@ public class PlayerController : MonoBehaviour
         animator.SetFloat("AttackAnimationSpeed", attackSpeedMultiplier);
 
         //Actualize walking speed
-        walkSpeed = 10 - character.GetSword().GetWeight() / 15;
+        walkSpeed = 10 - character.GetSword().GetWeight()/6;
 
         //Allow the player to dash without having perform any mouvement
         nonNullDirection = transform.forward.normalized;
